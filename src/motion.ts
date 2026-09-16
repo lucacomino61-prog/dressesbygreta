@@ -52,11 +52,24 @@ function hero(): void {
   // so a slow connection shows the blurred stand-in instead of an empty print.
   gsap.from('.hero__title', { opacity: 0, letterSpacing: '0.3em', duration: 0.9, ease: 'expo.out' });
   gsap.from('.hero__content', { opacity: 0, y: 10, duration: 0.5, ease: 'expo.out', delay: 0.3 });
-  const img = document.querySelector<HTMLImageElement>('.hero__plate img');
-  gsap.set('.hero__plate', { '--p': 0 });
-  const ready = img ? (img.complete ? Promise.resolve() : img.decode().catch(() => undefined)) : Promise.resolve();
-  void Promise.race([ready, new Promise((r) => setTimeout(r, 6000))]).then(() => {
-    gsap.to('.hero__plate', { '--p': 1, duration: 1.1, ease: 'power3.out', overwrite: 'auto' });
+  const plate = document.querySelector<HTMLElement>('.hero__plate');
+  const img = plate?.querySelector<HTMLImageElement>('img');
+  if (!plate) return;
+  const print = { p: 0 };
+  plate.style.setProperty('--p', '0');
+  const ready = new Promise<void>((resolve) => {
+    if (!img || (img.complete && img.naturalWidth > 0)) return resolve();
+    img.addEventListener('load', () => resolve(), { once: true });
+    img.addEventListener('error', () => resolve(), { once: true });
+  });
+  // Never wait more than 2.5s: a stalled download still gets the print over the stand-in.
+  void Promise.race([ready, new Promise((r) => setTimeout(r, 2500))]).then(() => {
+    gsap.to(print, {
+      p: 1,
+      duration: 1.1,
+      ease: 'power3.out',
+      onUpdate: () => plate.style.setProperty('--p', print.p.toFixed(4)),
+    });
   });
 
   // The photograph drifts under the pinned wordmark as the page starts to scroll. The drift is
