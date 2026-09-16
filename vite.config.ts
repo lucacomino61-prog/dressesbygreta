@@ -22,7 +22,6 @@ const csp: Plugin = {
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self'",
       "worker-src 'self' blob:",
-      "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'none'",
     ].join('; ');
