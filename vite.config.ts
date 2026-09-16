@@ -2,6 +2,8 @@ import { defineConfig, type Plugin } from 'vite';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 /**
  * Static site. The MediaPipe wasm runtime (public/mediapipe) and the pose model (public/models)
  * are served from this origin; no CDN, no proxies, no backend. Keep them byte-identical to the
@@ -49,7 +51,7 @@ const rawForCalibration: Plugin = {
 };
 
 export default defineConfig({
-  plugins: [csp, rawForCalibration],
+  plugins: [csp, rawForCalibration, cloudflare()],
   server: { port: 3640, strictPort: true, host: '127.0.0.1' },
   preview: { port: 3641, strictPort: true },
   build: {

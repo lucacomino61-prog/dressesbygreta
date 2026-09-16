@@ -1,12 +1,3 @@
-/mediapipe/*
-  Cache-Control: public, max-age=31536000, immutable
-/models/*
-  Cache-Control: public, max-age=31536000, immutable
-/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-/dresses/*
-  Cache-Control: public, max-age=2592000
-/*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(self), microphone=(), geolocation=()
+[INFO] Recording command outcome: printf
+
+[OK] Command outcome recorded

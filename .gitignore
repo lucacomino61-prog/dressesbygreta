@@ -11,3 +11,12 @@ raw/tryon-src/
 raw/cut/
 raw/*.html
 raw/*.html
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
+raw/*.log
+.claude-flow/
