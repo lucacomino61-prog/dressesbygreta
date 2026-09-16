@@ -48,10 +48,16 @@ export async function initMotion(): Promise<void> {
 }
 
 function hero(): void {
-  const tl = gsap.timeline({ defaults: { overwrite: 'auto' } });
-  tl.fromTo('.hero__plate', { '--p': 0 }, { '--p': 1, duration: 1.1, ease: 'power3.out' }, 0)
-    .from('.hero__title', { opacity: 0, letterSpacing: '0.3em', duration: 0.9, ease: 'expo.out' }, 0.35)
-    .from('.hero__content', { opacity: 0, y: 10, duration: 0.5, ease: 'expo.out' }, 0.7);
+  // The wordmark and button appear at once; the photograph prints only once it has decoded,
+  // so a slow connection shows the blurred stand-in instead of an empty print.
+  gsap.from('.hero__title', { opacity: 0, letterSpacing: '0.3em', duration: 0.9, ease: 'expo.out' });
+  gsap.from('.hero__content', { opacity: 0, y: 10, duration: 0.5, ease: 'expo.out', delay: 0.3 });
+  const img = document.querySelector<HTMLImageElement>('.hero__plate img');
+  gsap.set('.hero__plate', { '--p': 0 });
+  const ready = img ? (img.complete ? Promise.resolve() : img.decode().catch(() => undefined)) : Promise.resolve();
+  void Promise.race([ready, new Promise((r) => setTimeout(r, 6000))]).then(() => {
+    gsap.to('.hero__plate', { '--p': 1, duration: 1.1, ease: 'power3.out', overwrite: 'auto' });
+  });
 
   // The photograph drifts under the pinned wordmark as the page starts to scroll. The drift is
   // a typed custom property composed into the CSS transform, so the print zoom keeps working.

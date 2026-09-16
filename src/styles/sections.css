@@ -20,6 +20,21 @@
   background: var(--stage);
 }
 
+/* the blurred stand-in (image set in lqip.css) shows before the photograph has downloaded */
+.hero__plate .plate__inner::before {
+  content: '';
+  position: absolute;
+  inset: -24px;
+  background-size: cover;
+  background-position: 50% 20%;
+  filter: blur(18px);
+  transform: scale(1.04);
+}
+
+.hero__plate .plate__img {
+  position: relative;
+}
+
 .hero__plate .plate__img {
   object-position: 50% 20%;
 }

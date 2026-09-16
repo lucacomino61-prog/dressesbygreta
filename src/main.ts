@@ -2,6 +2,7 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/components.css';
 import './styles/sections.css';
+import './styles/lqip.css';
 import './styles/room.css';
 
 import { detectLang, writeLang, type Lang } from './copy';
