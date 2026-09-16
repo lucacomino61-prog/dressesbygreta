@@ -1,0 +1,301 @@
+{
+ "ddtqfwsn62u": {
+  "anchors": {
+   "shoulderL": {
+    "x": 401,
+    "y": 88
+   },
+   "shoulderR": {
+    "x": 120,
+    "y": 92
+   },
+   "hipL": {
+    "x": 357,
+    "y": 524
+   },
+   "hipR": {
+    "x": 190,
+    "y": 529
+   }
+  },
+  "auto": true
+ },
+ "dxeq0dgjukw": {
+  "anchors": {
+   "shoulderL": {
+    "x": -16,
+    "y": 58
+   },
+   "shoulderR": {
+    "x": 189,
+    "y": 57
+   },
+   "hipL": {
+    "x": 94,
+    "y": 387
+   },
+   "hipR": {
+    "x": 186,
+    "y": 381
+   }
+  },
+  "auto": true
+ },
+ "dwo4ksjwn1": {
+  "anchors": {
+   "shoulderL": {
+    "x": 312,
+    "y": 75
+   },
+   "shoulderR": {
+    "x": 60,
+    "y": 79
+   },
+   "hipL": {
+    "x": 270,
+    "y": 485
+   },
+   "hipR": {
+    "x": 136,
+    "y": 489
+   }
+  },
+  "auto": true
+ },
+ "dkhwljftsxi": {
+  "anchors": {
+   "shoulderL": {
+    "x": 674,
+    "y": 718
+   },
+   "shoulderR": {
+    "x": 434,
+    "y": 719
+   },
+   "hipL": {
+    "x": 568,
+    "y": 1225
+   },
+   "hipR": {
+    "x": 426,
+    "y": 1210
+   }
+  },
+  "auto": true
+ },
+ "divecbtreh": {
+  "anchors": {
+   "shoulderL": {
+    "x": 148,
+    "y": 91
+   },
+   "shoulderR": {
+    "x": 421,
+    "y": 84
+   },
+   "hipL": {
+    "x": 215,
+    "y": 513
+   },
+   "hipR": {
+    "x": 369,
+    "y": 507
+   }
+  },
+  "auto": true
+ },
+ "drrzqm4dfpz": {
+  "anchors": {
+   "shoulderL": {
+    "x": 350,
+    "y": -6
+   },
+   "shoulderR": {
+    "x": 187,
+    "y": 4
+   },
+   "hipL": {
+    "x": 302,
+    "y": 426
+   },
+   "hipR": {
+    "x": 212,
+    "y": 413
+   }
+  },
+  "auto": true
+ },
+ "dw9xra1jdqj": {
+  "anchors": {
+   "shoulderL": {
+    "x": 359,
+    "y": 79
+   },
+   "shoulderR": {
+    "x": 173,
+    "y": 102
+   },
+   "hipL": {
+    "x": 269,
+    "y": 456
+   },
+   "hipR": {
+    "x": 178,
+    "y": 457
+   }
+  },
+  "auto": true
+ },
+ "dlz6jzonv8": {
+  "anchors": {
+   "shoulderL": {
+    "x": 85,
+    "y": 63
+   },
+   "shoulderR": {
+    "x": 264,
+    "y": 67
+   },
+   "hipL": {
+    "x": 139,
+    "y": 426
+   },
+   "hipR": {
+    "x": 237,
+    "y": 426
+   }
+  },
+  "auto": true
+ },
+ "dxxxjcvdcln": {
+  "anchors": {
+   "shoulderL": {
+    "x": 491,
+    "y": 72
+   },
+   "shoulderR": {
+    "x": 180,
+    "y": 119
+   },
+   "hipL": {
+    "x": 441,
+    "y": 453
+   },
+   "hipR": {
+    "x": 270,
+    "y": 458
+   }
+  },
+  "auto": true
+ },
+ "dv0iu5mjbce": {
+  "anchors": {
+   "shoulderL": {
+    "x": 256,
+    "y": -161
+   },
+   "shoulderR": {
+    "x": 533,
+    "y": -161
+   },
+   "hipL": {
+    "x": 317,
+    "y": 269
+   },
+   "hipR": {
+    "x": 472,
+    "y": 269
+   }
+  },
+  "auto": false,
+  "kind": "gown"
+ },
+ "dlphhhgtwa": {
+  "anchors": {
+   "shoulderL": {
+    "x": 238,
+    "y": -130
+   },
+   "shoulderR": {
+    "x": 478,
+    "y": -130
+   },
+   "hipL": {
+    "x": 291,
+    "y": 219
+   },
+   "hipR": {
+    "x": 425,
+    "y": 219
+   }
+  },
+  "auto": false,
+  "kind": "gown"
+ },
+ "dq6kc7cdal0": {
+  "anchors": {
+   "shoulderL": {
+    "x": 128,
+    "y": -157
+   },
+   "shoulderR": {
+    "x": 352,
+    "y": -157
+   },
+   "hipL": {
+    "x": 177,
+    "y": 245
+   },
+   "hipR": {
+    "x": 303,
+    "y": 245
+   }
+  },
+  "auto": false,
+  "kind": "midi"
+ },
+ "dwyrehpdzty": {
+  "anchors": {
+   "shoulderL": {
+    "x": 294,
+    "y": -361
+   },
+   "shoulderR": {
+    "x": 353,
+    "y": -361
+   },
+   "hipL": {
+    "x": 307,
+    "y": 534
+   },
+   "hipR": {
+    "x": 340,
+    "y": 534
+   }
+  },
+  "auto": false,
+  "kind": "mini"
+ },
+ "dwmbtytjbda": {
+  "anchors": {
+   "shoulderL": {
+    "x": 168,
+    "y": 93
+   },
+   "shoulderR": {
+    "x": 380,
+    "y": 93
+   },
+   "hipL": {
+    "x": 214,
+    "y": 480
+   },
+   "hipR": {
+    "x": 334,
+    "y": 480
+   }
+  },
+  "auto": false,
+  "kind": "sleeved-knee"
+ }
+}

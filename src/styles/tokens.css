@@ -1,0 +1,92 @@
+/* Dresses by Greta: design tokens. Light, Helvetica, 12px uppercase chrome, square corners.
+   The visual language follows the client's reference (vivetofficial.com, Shopify Horizon). */
+@property --p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --drift {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+:root {
+  color-scheme: light;
+
+  /* colour */
+  --ground: #ffffff;
+  --ground-2: #f4f4f4;
+  --ground-3: #ebebeb;
+  --hairline: #e6e6e6;
+  --line: #606a72;
+  --ink: #000000;
+  --ink-2: rgba(0, 0, 0, 0.8);
+  --ink-3: rgba(0, 0, 0, 0.55);
+  --accent: #000000;
+  --on-accent: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.15);
+  --scrim: #000000;
+  --stage: #0b0b0b;
+  --on-photo: #ffffff;
+
+  /* type */
+  --font: 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --fs-ui: 12px;
+  --fs-body: 14px;
+  --track-ui: 0.02em;
+
+  /* spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --gutter: 16px;
+  --section: var(--s-8);
+  --header-h: 49px;
+  --drawer-w: min(370px, 92vw);
+
+  /* shape: square everywhere */
+  --r: 0px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-color: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --d-press: 120ms;
+  --d-hover: 160ms;
+  --d-nav: 200ms;
+  --d-exit: 280ms;
+  --d-enter: 420ms;
+
+  /* layers */
+  --z-nav: 20;
+  --z-drawer: 40;
+  --z-grain: 50;
+
+  /* stage height used by the scan bar */
+  --stage-h: 100svh;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 40px;
+    --section: var(--s-9);
+    --header-h: 54px;
+  }
+}

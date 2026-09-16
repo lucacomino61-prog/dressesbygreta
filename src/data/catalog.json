@@ -1,0 +1,1151 @@
+{
+  "generatedFrom": "@dressesbygreta",
+  "count": 39,
+  "assets": {
+    "neon": {
+      "src": "dresses/DXb2_ZhDa86_0.jpg",
+      "sm": "dresses/sm/DXb2_ZhDa86_0.jpg",
+      "w": 788,
+      "h": 1400,
+      "alt": "Dresses by Greta neon sign",
+      "permalink": "https://www.instagram.com/reel/DXb2_ZhDa86/"
+    },
+    "shop": {
+      "src": "dresses/DITwbI4NAC4_0.jpg",
+      "sm": "dresses/sm/DITwbI4NAC4_0.jpg",
+      "w": 1120,
+      "h": 1400,
+      "alt": "The boutique, Tirana",
+      "permalink": "https://www.instagram.com/p/DITwbI4NAC4/"
+    }
+  },
+  "items": [
+    {
+      "id": "dcbgdugjdpc",
+      "code": "DcBgdUgjdPC",
+      "name": "Gold fringe gown",
+      "color": "gold",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": false,
+      "cutout": null,
+      "caption": "✨✨",
+      "permalink": "https://www.instagram.com/p/DcBgdUgjdPC/",
+      "images": [
+        {
+          "src": "dresses/DcBgdUgjdPC_0.jpg",
+          "sm": "dresses/sm/DcBgdUgjdPC_0.jpg",
+          "w": 1164,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DcBgdUgjdPC_1.jpg",
+          "sm": "dresses/sm/DcBgdUgjdPC_1.jpg",
+          "w": 1163,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dbzsj3tvu8",
+      "code": "Db-zsJ3tVU8",
+      "name": "Sapphire sequin gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": false,
+      "cutout": null,
+      "caption": "💙",
+      "permalink": "https://www.instagram.com/reel/Db-zsJ3tVU8/",
+      "images": [
+        {
+          "src": "dresses/Db-zsJ3tVU8_0.jpg",
+          "sm": "dresses/sm/Db-zsJ3tVU8_0.jpg",
+          "w": 790,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "ddtqfwsn62u",
+      "code": "DdTqfwSN62u",
+      "name": "Crimson sleeve gown",
+      "color": "red",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/ddtqfwsn62u.png",
+        "w": 541,
+        "h": 1515,
+        "anchors": {
+          "shoulderL": {
+            "x": 401,
+            "y": 88
+          },
+          "shoulderR": {
+            "x": 120,
+            "y": 92
+          },
+          "hipL": {
+            "x": 357,
+            "y": 524
+          },
+          "hipR": {
+            "x": 190,
+            "y": 529
+          }
+        }
+      },
+      "caption": "🥀",
+      "permalink": "https://www.instagram.com/reel/DdTqfwSN62u/",
+      "images": [
+        {
+          "src": "dresses/DdTqfwSN62u_0.jpg",
+          "sm": "dresses/sm/DdTqfwSN62u_0.jpg",
+          "w": 790,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dxeq0dgjukw",
+      "code": "DXEq0dGjUkW",
+      "name": "Ice blue beaded gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dxeq0dgjukw.png",
+        "w": 307,
+        "h": 761,
+        "anchors": {
+          "shoulderL": {
+            "x": -16,
+            "y": 58
+          },
+          "shoulderR": {
+            "x": 189,
+            "y": 57
+          },
+          "hipL": {
+            "x": 94,
+            "y": 387
+          },
+          "hipR": {
+            "x": 186,
+            "y": 381
+          }
+        }
+      },
+      "caption": "🩵",
+      "permalink": "https://www.instagram.com/reel/DXEq0dGjUkW/",
+      "images": [
+        {
+          "src": "dresses/DXEq0dGjUkW_0.jpg",
+          "sm": "dresses/sm/DXEq0dGjUkW_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dwo4ksjwn1",
+      "code": "DW_o4kSjWN1",
+      "name": "Lavender sequin gown",
+      "color": "lilac",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dwo4ksjwn1.png",
+        "w": 405,
+        "h": 851,
+        "anchors": {
+          "shoulderL": {
+            "x": 312,
+            "y": 75
+          },
+          "shoulderR": {
+            "x": 60,
+            "y": 79
+          },
+          "hipL": {
+            "x": 270,
+            "y": 485
+          },
+          "hipR": {
+            "x": 136,
+            "y": 489
+          }
+        }
+      },
+      "caption": "💜",
+      "permalink": "https://www.instagram.com/reel/DW_o4kSjWN1/",
+      "images": [
+        {
+          "src": "dresses/DW_o4kSjWN1_0.jpg",
+          "sm": "dresses/sm/DW_o4kSjWN1_0.jpg",
+          "w": 720,
+          "h": 1280
+        }
+      ]
+    },
+    {
+      "id": "dv0iu5mjbce",
+      "code": "DV0iU5MjbCe",
+      "name": "Burgundy slit gown",
+      "color": "red",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dv0iu5mjbce.png",
+        "w": 645,
+        "h": 1232,
+        "anchors": {
+          "shoulderL": {
+            "x": 256,
+            "y": -161
+          },
+          "shoulderR": {
+            "x": 533,
+            "y": -161
+          },
+          "hipL": {
+            "x": 317,
+            "y": 269
+          },
+          "hipR": {
+            "x": 472,
+            "y": 269
+          }
+        }
+      },
+      "caption": "🥀",
+      "permalink": "https://www.instagram.com/p/DV0iU5MjbCe/",
+      "images": [
+        {
+          "src": "dresses/DV0iU5MjbCe_0.jpg",
+          "sm": "dresses/sm/DV0iU5MjbCe_0.jpg",
+          "w": 1082,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dkhwljftsxi",
+      "code": "DKHWLJFtsXi",
+      "name": "Violet sequin gown",
+      "color": "purple",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dkhwljftsxi.png",
+        "w": 1053,
+        "h": 1800,
+        "anchors": {
+          "shoulderL": {
+            "x": 674,
+            "y": 718
+          },
+          "shoulderR": {
+            "x": 434,
+            "y": 719
+          },
+          "hipL": {
+            "x": 568,
+            "y": 1225
+          },
+          "hipR": {
+            "x": 426,
+            "y": 1210
+          }
+        }
+      },
+      "caption": "💜",
+      "permalink": "https://www.instagram.com/p/DKHWLJFtsXi/",
+      "images": [
+        {
+          "src": "dresses/DKHWLJFtsXi_0.jpg",
+          "sm": "dresses/sm/DKHWLJFtsXi_0.jpg",
+          "w": 1120,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "divecbtreh",
+      "code": "DIV_ecBtrEH",
+      "name": "Mauve ruffle gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/divecbtreh.png",
+        "w": 522,
+        "h": 1431,
+        "anchors": {
+          "shoulderL": {
+            "x": 148,
+            "y": 91
+          },
+          "shoulderR": {
+            "x": 421,
+            "y": 84
+          },
+          "hipL": {
+            "x": 215,
+            "y": 513
+          },
+          "hipR": {
+            "x": 369,
+            "y": 507
+          }
+        }
+      },
+      "caption": "🤍",
+      "permalink": "https://www.instagram.com/p/DIV_ecBtrEH/",
+      "images": [
+        {
+          "src": "dresses/DIV_ecBtrEH_0.jpg",
+          "sm": "dresses/sm/DIV_ecBtrEH_0.jpg",
+          "w": 1120,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dlphhhgtwa",
+      "code": "DLphhhGtwA-",
+      "name": "Sage lace gown",
+      "color": "green",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dlphhhgtwa.png",
+        "w": 715,
+        "h": 1001,
+        "anchors": {
+          "shoulderL": {
+            "x": 238,
+            "y": -130
+          },
+          "shoulderR": {
+            "x": 478,
+            "y": -130
+          },
+          "hipL": {
+            "x": 291,
+            "y": 219
+          },
+          "hipR": {
+            "x": 425,
+            "y": 219
+          }
+        }
+      },
+      "caption": "💐",
+      "permalink": "https://www.instagram.com/p/DLphhhGtwA-/",
+      "images": [
+        {
+          "src": "dresses/DLphhhGtwA-_0.jpg",
+          "sm": "dresses/sm/DLphhhGtwA-_0.jpg",
+          "w": 1120,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "drrzqm4dfpz",
+      "code": "DRRzqM4DFpZ",
+      "name": "Graphite draped gown",
+      "color": "grey",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/drrzqm4dfpz.png",
+        "w": 548,
+        "h": 1157,
+        "anchors": {
+          "shoulderL": {
+            "x": 350,
+            "y": -6
+          },
+          "shoulderR": {
+            "x": 187,
+            "y": 4
+          },
+          "hipL": {
+            "x": 302,
+            "y": 426
+          },
+          "hipR": {
+            "x": 212,
+            "y": 413
+          }
+        }
+      },
+      "caption": "🖤",
+      "permalink": "https://www.instagram.com/p/DRRzqM4DFpZ/",
+      "images": [
+        {
+          "src": "dresses/DRRzqM4DFpZ_0.jpg",
+          "sm": "dresses/sm/DRRzqM4DFpZ_0.jpg",
+          "w": 1050,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dwmbtytjbda",
+      "code": "DWmBTyTjbdA",
+      "name": "Rose sequin cape gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dwmbtytjbda.png",
+        "w": 593,
+        "h": 774,
+        "anchors": {
+          "shoulderL": {
+            "x": 168,
+            "y": 93
+          },
+          "shoulderR": {
+            "x": 380,
+            "y": 93
+          },
+          "hipL": {
+            "x": 214,
+            "y": 480
+          },
+          "hipR": {
+            "x": 334,
+            "y": 480
+          }
+        }
+      },
+      "caption": "💗",
+      "permalink": "https://www.instagram.com/reel/DWmBTyTjbdA/",
+      "images": [
+        {
+          "src": "dresses/DWmBTyTjbdA_0.jpg",
+          "sm": "dresses/sm/DWmBTyTjbdA_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dw9xra1jdqj",
+      "code": "DW9XRa1jdQJ",
+      "name": "Black halter gown",
+      "color": "black",
+      "cats": [
+        "gowns",
+        "black"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "💫",
+      "permalink": "https://www.instagram.com/reel/DW9XRa1jdQJ/",
+      "images": [
+        {
+          "src": "dresses/DW9XRa1jdQJ_0.jpg",
+          "sm": "dresses/sm/DW9XRa1jdQJ_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dzf1oltjul",
+      "code": "DZF1OlTjUL-",
+      "name": "Powder blue satin gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🩵",
+      "permalink": "https://www.instagram.com/p/DZF1OlTjUL-/",
+      "images": [
+        {
+          "src": "dresses/DZF1OlTjUL-_1.jpg",
+          "sm": "dresses/sm/DZF1OlTjUL-_1.jpg",
+          "w": 1061,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DZF1OlTjUL-_0.jpg",
+          "sm": "dresses/sm/DZF1OlTjUL-_0.jpg",
+          "w": 1061,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dzpffzvja5",
+      "code": "DZPffzVja-5",
+      "name": "Ivory slit gown",
+      "color": "white",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🤍",
+      "permalink": "https://www.instagram.com/p/DZPffzVja-5/",
+      "images": [
+        {
+          "src": "dresses/DZPffzVja-5_0.jpg",
+          "sm": "dresses/sm/DZPffzVja-5_0.jpg",
+          "w": 1050,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DZPffzVja-5_1.jpg",
+          "sm": "dresses/sm/DZPffzVja-5_1.jpg",
+          "w": 1051,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "ddgyxsbjynz",
+      "code": "DdGyxsBjYNZ",
+      "name": "Rose cut-out gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "💕",
+      "permalink": "https://www.instagram.com/p/DdGyxsBjYNZ/",
+      "images": [
+        {
+          "src": "dresses/DdGyxsBjYNZ_0.jpg",
+          "sm": "dresses/sm/DdGyxsBjYNZ_0.jpg",
+          "w": 1050,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DdGyxsBjYNZ_1.jpg",
+          "sm": "dresses/sm/DdGyxsBjYNZ_1.jpg",
+          "w": 1019,
+          "h": 1359
+        }
+      ]
+    },
+    {
+      "id": "dzab0pwdyqq",
+      "code": "DZAb0PwDYQq",
+      "name": "Blush tulle gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Curated for your special moments✨",
+      "permalink": "https://www.instagram.com/p/DZAb0PwDYQq/",
+      "images": [
+        {
+          "src": "dresses/DZAb0PwDYQq_0.jpg",
+          "sm": "dresses/sm/DZAb0PwDYQq_0.jpg",
+          "w": 1050,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "ddcfpkttahn",
+      "code": "DdCFPkTtahn",
+      "name": "Lilac wrap gown",
+      "color": "lilac",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Wear the occasion!🤍",
+      "permalink": "https://www.instagram.com/reel/DdCFPkTtahn/",
+      "images": [
+        {
+          "src": "dresses/DdCFPkTtahn_0.jpg",
+          "sm": "dresses/sm/DdCFPkTtahn_0.jpg",
+          "w": 790,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dce2fm6tkry",
+      "code": "DcE2FM6tKRY",
+      "name": "Lemon chiffon gown",
+      "color": "yellow",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Dress available for rent💛",
+      "permalink": "https://www.instagram.com/reel/DcE2FM6tKRY/",
+      "images": [
+        {
+          "src": "dresses/DcE2FM6tKRY_0.jpg",
+          "sm": "dresses/sm/DcE2FM6tKRY_0.jpg",
+          "w": 720,
+          "h": 1280
+        }
+      ]
+    },
+    {
+      "id": "dqbyseedcym",
+      "code": "DQBySEeDCYm",
+      "name": "Teal off-shoulder gown",
+      "color": "teal",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🤍",
+      "permalink": "https://www.instagram.com/p/DQBySEeDCYm/",
+      "images": [
+        {
+          "src": "dresses/DQBySEeDCYm_0.jpg",
+          "sm": "dresses/sm/DQBySEeDCYm_0.jpg",
+          "w": 1093,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dtbz0rrjqwf",
+      "code": "DTBZ0RrjQwf",
+      "name": "Silver draped gown",
+      "color": "silver",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🩶",
+      "permalink": "https://www.instagram.com/p/DTBZ0RrjQwf/",
+      "images": [
+        {
+          "src": "dresses/DTBZ0RrjQwf_1.jpg",
+          "sm": "dresses/sm/DTBZ0RrjQwf_1.jpg",
+          "w": 1055,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DTBZ0RrjQwf_0.jpg",
+          "sm": "dresses/sm/DTBZ0RrjQwf_0.jpg",
+          "w": 1050,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dypdqbptgbx",
+      "code": "DYPdQBPtgBx",
+      "name": "Indigo draped gown",
+      "color": "purple",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "New collection💜",
+      "permalink": "https://www.instagram.com/reel/DYPdQBPtgBx/",
+      "images": [
+        {
+          "src": "dresses/DYPdQBPtgBx_0.jpg",
+          "sm": "dresses/sm/DYPdQBPtgBx_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dw6ipy0jewk",
+      "code": "DW6ipY0jewK",
+      "name": "Plum lace gowns",
+      "color": "brown",
+      "cats": [
+        "gowns"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🤎",
+      "permalink": "https://www.instagram.com/reel/DW6ipY0jewK/",
+      "images": [
+        {
+          "src": "dresses/DW6ipY0jewK_0.jpg",
+          "sm": "dresses/sm/DW6ipY0jewK_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "ddjvjtgdrg",
+      "code": "DdJvjtGDRG-",
+      "name": "Brown lace midi",
+      "color": "brown",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🤎",
+      "permalink": "https://www.instagram.com/p/DdJvjtGDRG-/",
+      "images": [
+        {
+          "src": "dresses/DdJvjtGDRG-_0.jpg",
+          "sm": "dresses/sm/DdJvjtGDRG-_0.jpg",
+          "w": 1050,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DdJvjtGDRG-_1.jpg",
+          "sm": "dresses/sm/DdJvjtGDRG-_1.jpg",
+          "w": 1050,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dq6kc7cdal0",
+      "code": "DQ6kC7cDal0",
+      "name": "Black strapless midi",
+      "color": "black",
+      "cats": [
+        "black",
+        "mini"
+      ],
+      "feature": false,
+      "tryon": true,
+      "cutout": {
+        "src": "dresses/cut/dq6kc7cdal0.png",
+        "w": 474,
+        "h": 832,
+        "anchors": {
+          "shoulderL": {
+            "x": 128,
+            "y": -157
+          },
+          "shoulderR": {
+            "x": 352,
+            "y": -157
+          },
+          "hipL": {
+            "x": 177,
+            "y": 245
+          },
+          "hipR": {
+            "x": 303,
+            "y": 245
+          }
+        }
+      },
+      "caption": "🖤",
+      "permalink": "https://www.instagram.com/p/DQ6kC7cDal0/",
+      "images": [
+        {
+          "src": "dresses/DQ6kC7cDal0_0.jpg",
+          "sm": "dresses/sm/DQ6kC7cDal0_0.jpg",
+          "w": 1050,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dlz6jzonv8",
+      "code": "DLZ6JZONv_8",
+      "name": "Black rose mini",
+      "color": "black",
+      "cats": [
+        "black",
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "❤️",
+      "permalink": "https://www.instagram.com/p/DLZ6JZONv_8/",
+      "images": [
+        {
+          "src": "dresses/DLZ6JZONv_8_0.jpg",
+          "sm": "dresses/sm/DLZ6JZONv_8_0.jpg",
+          "w": 1120,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dwyrehpdzty",
+      "code": "DWyreHpDZtY",
+      "name": "Violet sequin mini",
+      "color": "purple",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Mini prom ready 💫",
+      "permalink": "https://www.instagram.com/p/DWyreHpDZtY/",
+      "images": [
+        {
+          "src": "dresses/DWyreHpDZtY_0.jpg",
+          "sm": "dresses/sm/DWyreHpDZtY_0.jpg",
+          "w": 1400,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dxxxjcvdcln",
+      "code": "DXXXjCvDcln",
+      "name": "Silver glitter mini",
+      "color": "silver",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🌸",
+      "permalink": "https://www.instagram.com/reel/DXXXjCvDcln/",
+      "images": [
+        {
+          "src": "dresses/DXXXjCvDcln_0.jpg",
+          "sm": "dresses/sm/DXXXjCvDcln_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dqwl1gvjzod",
+      "code": "DQwl1GVjZoD",
+      "name": "Black lace mini",
+      "color": "black",
+      "cats": [
+        "black",
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🌚",
+      "permalink": "https://www.instagram.com/p/DQwl1GVjZoD/",
+      "images": [
+        {
+          "src": "dresses/DQwl1GVjZoD_0.jpg",
+          "sm": "dresses/sm/DQwl1GVjZoD_0.jpg",
+          "w": 1055,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dlh81xmtztw",
+      "code": "DLh81xMtzTW",
+      "name": "Blush tiered mini",
+      "color": "pink",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🌸🤍",
+      "permalink": "https://www.instagram.com/p/DLh81xMtzTW/",
+      "images": [
+        {
+          "src": "dresses/DLh81xMtzTW_0.jpg",
+          "sm": "dresses/sm/DLh81xMtzTW_0.jpg",
+          "w": 1120,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dcyivhitu",
+      "code": "DcyivhIt__u",
+      "name": "White ruffle mini",
+      "color": "white",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Made for unforgettable occasions🤍",
+      "permalink": "https://www.instagram.com/reel/DcyivhIt__u/",
+      "images": [
+        {
+          "src": "dresses/DcyivhIt__u_0.jpg",
+          "sm": "dresses/sm/DcyivhIt__u_0.jpg",
+          "w": 790,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dxrxgkddzn7",
+      "code": "DXrXgKdDZN7",
+      "name": "Blush satin mini",
+      "color": "pink",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🌸",
+      "permalink": "https://www.instagram.com/reel/DXrXgKdDZN7/",
+      "images": [
+        {
+          "src": "dresses/DXrXgKdDZN7_0.jpg",
+          "sm": "dresses/sm/DXrXgKdDZN7_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dwtsypfdvtn",
+      "code": "DWtsYPFDVTn",
+      "name": "Magenta brocade mini",
+      "color": "purple",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "🌸",
+      "permalink": "https://www.instagram.com/reel/DWtsYPFDVTn/",
+      "images": [
+        {
+          "src": "dresses/DWtsYPFDVTn_0.jpg",
+          "sm": "dresses/sm/DWtsYPFDVTn_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dwwhaejv87",
+      "code": "DWwhAe-jV87",
+      "name": "Burgundy corset dress",
+      "color": "red",
+      "cats": [
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Dream prom dress🥀",
+      "permalink": "https://www.instagram.com/reel/DWwhAe-jV87/",
+      "images": [
+        {
+          "src": "dresses/DWwhAe-jV87_0.jpg",
+          "sm": "dresses/sm/DWwhAe-jV87_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dbvckiqjekt",
+      "code": "DbVckiqjekT",
+      "name": "Black crystal look",
+      "color": "black",
+      "cats": [
+        "black"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Prettiest girl in our custom-made masterpiece🤍",
+      "permalink": "https://www.instagram.com/p/DbVckiqjekT/",
+      "images": [
+        {
+          "src": "dresses/DbVckiqjekT_0.jpg",
+          "sm": "dresses/sm/DbVckiqjekT_0.jpg",
+          "w": 1055,
+          "h": 1400
+        },
+        {
+          "src": "dresses/DbVckiqjekT_1.jpg",
+          "sm": "dresses/sm/DbVckiqjekT_1.jpg",
+          "w": 1055,
+          "h": 1400
+        }
+      ]
+    },
+    {
+      "id": "dv4nsm5drmg",
+      "code": "DV4NSM5DRmG",
+      "name": "Selin, Big Brother VIP",
+      "color": "black",
+      "cats": [
+        "tv",
+        "black"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Selin wearing @dressesbygreta ✨✨",
+      "permalink": "https://www.instagram.com/reel/DV4NSM5DRmG/",
+      "images": [
+        {
+          "src": "dresses/DV4NSM5DRmG_0.jpg",
+          "sm": "dresses/sm/DV4NSM5DRmG_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dv590jwdrme",
+      "code": "DV590JwDRmE",
+      "name": "Edisa, Big Brother VIP",
+      "color": "black",
+      "cats": [
+        "tv",
+        "black"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Edisa in black. A statement of elegance, designed to captivate.🖤",
+      "permalink": "https://www.instagram.com/reel/DV590JwDRmE/",
+      "images": [
+        {
+          "src": "dresses/DV590JwDRmE_0.jpg",
+          "sm": "dresses/sm/DV590JwDRmE_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dv51lotjc43",
+      "code": "DV51LOtjc43",
+      "name": "Nikol, Big Brother VIP",
+      "color": "blue",
+      "cats": [
+        "tv"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "✨Nikol in timeless elegance, wearing @dressesbygreta 🩵",
+      "permalink": "https://www.instagram.com/reel/DV51LOtjc43/",
+      "images": [
+        {
+          "src": "dresses/DV51LOtjc43_0.jpg",
+          "sm": "dresses/sm/DV51LOtjc43_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dv4wqdddyxf",
+      "code": "DV4WqdDDYXF",
+      "name": "Brikena, Big Brother VIP",
+      "color": "lilac",
+      "cats": [
+        "tv"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Brikena’s look for tonight💜 @dressesbygreta",
+      "permalink": "https://www.instagram.com/reel/DV4WqdDDYXF/",
+      "images": [
+        {
+          "src": "dresses/DV4WqdDDYXF_0.jpg",
+          "sm": "dresses/sm/DV4WqdDDYXF_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    },
+    {
+      "id": "dv4q27ejqga",
+      "code": "DV4Q27ejQGA",
+      "name": "Greta, Big Brother VIP",
+      "color": "pink",
+      "cats": [
+        "tv",
+        "mini"
+      ],
+      "feature": false,
+      "tryon": false,
+      "cutout": null,
+      "caption": "Pretty in pink🌸 Greta shining in our latest dress🤍",
+      "permalink": "https://www.instagram.com/reel/DV4Q27ejQGA/",
+      "images": [
+        {
+          "src": "dresses/DV4Q27ejQGA_0.jpg",
+          "sm": "dresses/sm/DV4Q27ejQGA_0.jpg",
+          "w": 640,
+          "h": 1136
+        }
+      ]
+    }
+  ]
+}

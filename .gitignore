@@ -1,0 +1,12 @@
+node_modules/
+dist/
+raw/*.jpg
+raw/*.png
+raw/server.log
+tools/.venv/
+.impeccable/live/
+public/raw-cut/
+public/raw-src/
+raw/tryon-src/
+raw/cut/
+raw/*.html

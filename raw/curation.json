@@ -1,0 +1,477 @@
+{
+  "_note": "Hand curation of the harvested Instagram images. Names are descriptive (colour + silhouette), never claims. tryon = clean standing full-body garment, suitable for cutout. feature = runway/hero candidates. role = non-catalog asset.",
+  "items": [
+    {
+      "file": "DcBgdUgjdPC_0.jpg",
+      "code": "DcBgdUgjdPC",
+      "name": "Gold fringe gown",
+      "color": "gold",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": false
+    },
+    {
+      "file": "DcBgdUgjdPC_1.jpg",
+      "code": "DcBgdUgjdPC",
+      "name": "Gold fringe gown",
+      "color": "gold",
+      "cats": [
+        "gowns"
+      ],
+      "alt": true
+    },
+    {
+      "file": "Db-zsJ3tVU8_0.jpg",
+      "code": "Db-zsJ3tVU8",
+      "name": "Sapphire sequin gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": false
+    },
+    {
+      "file": "DdTqfwSN62u_0.jpg",
+      "code": "DdTqfwSN62u",
+      "name": "Crimson sleeve gown",
+      "color": "red",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true
+    },
+    {
+      "file": "DXEq0dGjUkW_0.jpg",
+      "code": "DXEq0dGjUkW",
+      "name": "Ice blue beaded gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true
+    },
+    {
+      "file": "DW_o4kSjWN1_0.jpg",
+      "code": "DW_o4kSjWN1",
+      "name": "Lavender sequin gown",
+      "color": "lilac",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true
+    },
+    {
+      "file": "DV0iU5MjbCe_0.jpg",
+      "code": "DV0iU5MjbCe",
+      "name": "Burgundy slit gown",
+      "color": "red",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true
+    },
+    {
+      "file": "DKHWLJFtsXi_0.jpg",
+      "code": "DKHWLJFtsXi",
+      "name": "Violet sequin gown",
+      "color": "purple",
+      "cats": [
+        "gowns"
+      ],
+      "tryon": true
+    },
+    {
+      "file": "DIV_ecBtrEH_0.jpg",
+      "code": "DIV_ecBtrEH",
+      "name": "Mauve ruffle gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "tryon": true
+    },
+    {
+      "file": "DLphhhGtwA-_0.jpg",
+      "code": "DLphhhGtwA-",
+      "name": "Sage lace gown",
+      "color": "green",
+      "cats": [
+        "gowns"
+      ],
+      "tryon": true
+    },
+    {
+      "file": "DRRzqM4DFpZ_0.jpg",
+      "code": "DRRzqM4DFpZ",
+      "name": "Graphite draped gown",
+      "color": "grey",
+      "cats": [
+        "gowns"
+      ],
+      "tryon": true
+    },
+    {
+      "file": "DWmBTyTjbdA_0.jpg",
+      "code": "DWmBTyTjbdA",
+      "name": "Rose sequin cape gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "feature": true,
+      "tryon": true
+    },
+    {
+      "file": "DW9XRa1jdQJ_0.jpg",
+      "code": "DW9XRa1jdQJ",
+      "name": "Black halter gown",
+      "color": "black",
+      "cats": [
+        "gowns",
+        "black"
+      ],
+      "tryon": false,
+      "tryonNote": "cutout includes mannequin skin; needs a cleaner source photo"
+    },
+    {
+      "file": "DZF1OlTjUL-_1.jpg",
+      "code": "DZF1OlTjUL-",
+      "name": "Powder blue satin gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DZF1OlTjUL-_0.jpg",
+      "code": "DZF1OlTjUL-",
+      "name": "Powder blue satin gown",
+      "color": "blue",
+      "cats": [
+        "gowns"
+      ],
+      "alt": true
+    },
+    {
+      "file": "DZPffzVja-5_0.jpg",
+      "code": "DZPffzVja-5",
+      "name": "Ivory slit gown",
+      "color": "white",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DZPffzVja-5_1.jpg",
+      "code": "DZPffzVja-5",
+      "name": "Ivory slit gown",
+      "color": "white",
+      "cats": [
+        "gowns"
+      ],
+      "alt": true
+    },
+    {
+      "file": "DdGyxsBjYNZ_0.jpg",
+      "code": "DdGyxsBjYNZ",
+      "name": "Rose cut-out gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DdGyxsBjYNZ_1.jpg",
+      "code": "DdGyxsBjYNZ",
+      "name": "Rose cut-out gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ],
+      "alt": true
+    },
+    {
+      "file": "DZAb0PwDYQq_0.jpg",
+      "code": "DZAb0PwDYQq",
+      "name": "Blush tulle gown",
+      "color": "pink",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DdCFPkTtahn_0.jpg",
+      "code": "DdCFPkTtahn",
+      "name": "Lilac wrap gown",
+      "color": "lilac",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DcE2FM6tKRY_0.jpg",
+      "code": "DcE2FM6tKRY",
+      "name": "Lemon chiffon gown",
+      "color": "yellow",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DQBySEeDCYm_0.jpg",
+      "code": "DQBySEeDCYm",
+      "name": "Teal off-shoulder gown",
+      "color": "teal",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DTBZ0RrjQwf_1.jpg",
+      "code": "DTBZ0RrjQwf",
+      "name": "Silver draped gown",
+      "color": "silver",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DTBZ0RrjQwf_0.jpg",
+      "code": "DTBZ0RrjQwf",
+      "name": "Silver draped gown",
+      "color": "silver",
+      "cats": [
+        "gowns"
+      ],
+      "alt": true
+    },
+    {
+      "file": "DYPdQBPtgBx_0.jpg",
+      "code": "DYPdQBPtgBx",
+      "name": "Indigo draped gown",
+      "color": "purple",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DW6ipY0jewK_0.jpg",
+      "code": "DW6ipY0jewK",
+      "name": "Plum lace gowns",
+      "color": "brown",
+      "cats": [
+        "gowns"
+      ]
+    },
+    {
+      "file": "DdJvjtGDRG-_0.jpg",
+      "code": "DdJvjtGDRG-",
+      "name": "Brown lace midi",
+      "color": "brown",
+      "cats": [
+        "mini"
+      ]
+    },
+    {
+      "file": "DdJvjtGDRG-_1.jpg",
+      "code": "DdJvjtGDRG-",
+      "name": "Brown lace midi",
+      "color": "brown",
+      "cats": [
+        "mini"
+      ],
+      "alt": true
+    },
+    {
+      "file": "DQ6kC7cDal0_0.jpg",
+      "code": "DQ6kC7cDal0",
+      "name": "Black strapless midi",
+      "color": "black",
+      "cats": [
+        "black",
+        "mini"
+      ],
+      "tryon": true
+    },
+    {
+      "file": "DLZ6JZONv_8_0.jpg",
+      "code": "DLZ6JZONv_8",
+      "name": "Black rose mini",
+      "color": "black",
+      "cats": [
+        "black",
+        "mini"
+      ],
+      "tryon": false,
+      "tryonNote": "cutout includes mannequin skin; needs a cleaner source photo"
+    },
+    {
+      "file": "DWyreHpDZtY_0.jpg",
+      "code": "DWyreHpDZtY",
+      "name": "Violet sequin mini",
+      "color": "purple",
+      "cats": [
+        "mini"
+      ],
+      "tryon": false,
+      "tryonNote": "cutout includes mannequin skin; needs a cleaner source photo"
+    },
+    {
+      "file": "DXXXjCvDcln_0.jpg",
+      "code": "DXXXjCvDcln",
+      "name": "Silver glitter mini",
+      "color": "silver",
+      "cats": [
+        "mini"
+      ],
+      "tryon": false,
+      "tryonNote": "cutout includes mannequin skin; needs a cleaner source photo"
+    },
+    {
+      "file": "DQwl1GVjZoD_0.jpg",
+      "code": "DQwl1GVjZoD",
+      "name": "Black lace mini",
+      "color": "black",
+      "cats": [
+        "black",
+        "mini"
+      ]
+    },
+    {
+      "file": "DLh81xMtzTW_0.jpg",
+      "code": "DLh81xMtzTW",
+      "name": "Blush tiered mini",
+      "color": "pink",
+      "cats": [
+        "mini"
+      ]
+    },
+    {
+      "file": "DcyivhIt__u_0.jpg",
+      "code": "DcyivhIt__u",
+      "name": "White ruffle mini",
+      "color": "white",
+      "cats": [
+        "mini"
+      ]
+    },
+    {
+      "file": "DXrXgKdDZN7_0.jpg",
+      "code": "DXrXgKdDZN7",
+      "name": "Blush satin mini",
+      "color": "pink",
+      "cats": [
+        "mini"
+      ]
+    },
+    {
+      "file": "DWtsYPFDVTn_0.jpg",
+      "code": "DWtsYPFDVTn",
+      "name": "Magenta brocade mini",
+      "color": "purple",
+      "cats": [
+        "mini"
+      ]
+    },
+    {
+      "file": "DWwhAe-jV87_0.jpg",
+      "code": "DWwhAe-jV87",
+      "name": "Burgundy corset dress",
+      "color": "red",
+      "cats": [
+        "mini"
+      ]
+    },
+    {
+      "file": "DbVckiqjekT_0.jpg",
+      "code": "DbVckiqjekT",
+      "name": "Black crystal look",
+      "color": "black",
+      "cats": [
+        "black"
+      ]
+    },
+    {
+      "file": "DbVckiqjekT_1.jpg",
+      "code": "DbVckiqjekT",
+      "name": "Black crystal look",
+      "color": "black",
+      "cats": [
+        "black"
+      ],
+      "alt": true
+    },
+    {
+      "file": "DV4NSM5DRmG_0.jpg",
+      "code": "DV4NSM5DRmG",
+      "name": "Selin, Big Brother VIP",
+      "color": "black",
+      "cats": [
+        "tv",
+        "black"
+      ]
+    },
+    {
+      "file": "DV590JwDRmE_0.jpg",
+      "code": "DV590JwDRmE",
+      "name": "Edisa, Big Brother VIP",
+      "color": "black",
+      "cats": [
+        "tv",
+        "black"
+      ]
+    },
+    {
+      "file": "DV51LOtjc43_0.jpg",
+      "code": "DV51LOtjc43",
+      "name": "Nikol, Big Brother VIP",
+      "color": "blue",
+      "cats": [
+        "tv"
+      ]
+    },
+    {
+      "file": "DV4WqdDDYXF_0.jpg",
+      "code": "DV4WqdDDYXF",
+      "name": "Brikena, Big Brother VIP",
+      "color": "lilac",
+      "cats": [
+        "tv"
+      ]
+    },
+    {
+      "file": "DV4Q27ejQGA_0.jpg",
+      "code": "DV4Q27ejQGA",
+      "name": "Greta, Big Brother VIP",
+      "color": "pink",
+      "cats": [
+        "tv",
+        "mini"
+      ]
+    },
+    {
+      "file": "DXb2_ZhDa86_0.jpg",
+      "code": "DXb2_ZhDa86",
+      "role": "neon",
+      "name": "Dresses by Greta neon sign"
+    },
+    {
+      "file": "DITwbI4NAC4_0.jpg",
+      "code": "DITwbI4NAC4",
+      "role": "shop",
+      "name": "The boutique, Tirana"
+    },
+    {
+      "file": "DQwl1GVjZoD_0.jpg",
+      "code": "DQwl1GVjZoD",
+      "role": "skip-dup"
+    }
+  ]
+}
