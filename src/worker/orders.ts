@@ -111,10 +111,19 @@ export type CreateResult =
 
 export async function createOrder(env: Env, input: OrderInput, origin: string): Promise<CreateResult> {
   const db = env.DB;
-  const existing = await db.prepare('SELECT id, number, status, payment_method FROM orders WHERE client_ref = ?').bind(input.ref).first<Pick<OrderRow, 'id' | 'number' | 'status' | 'payment_method'>>();
-  if (existing) return { ok: true, id: existing.id, number: existing.number };
-
   const gateway = gatewayFor(env);
+  const existing = await db
+    .prepare('SELECT id, number, status, total FROM orders WHERE client_ref = ?')
+    .bind(input.ref)
+    .first<Pick<OrderRow, 'id' | 'number' | 'status' | 'total'>>();
+  if (existing) {
+    // A replayed submit of an unpaid card order must still lead to the bank, not to a dead end.
+    if (existing.status === 'awaiting_payment' && gateway) {
+      const pay = await gateway.createPayment(existing, origin);
+      return { ok: true, id: existing.id, number: existing.number, payUrl: pay.url };
+    }
+    return { ok: true, id: existing.id, number: existing.number };
+  }
   if (input.payment === 'card' && !gateway) return { ok: false, status: 400, error: 'card_unavailable' };
 
   const zones = await getZones(db);

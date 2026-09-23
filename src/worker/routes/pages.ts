@@ -125,6 +125,8 @@ pages.get('/porosia/:id', async (c) => {
   const found = await getOrder(c.env.DB, c.req.param('id'));
   if (!found) return notFound(c);
   const lang = isLang(c.req.query('lang')) ? c.get('lang') : found.order.lang;
+  const gateway = gatewayFor(c.env);
+  const payUrl = found.order.status === 'awaiting_payment' && gateway ? (await gateway.createPayment(found.order, origin(c))).url : undefined;
   return send(
     c,
     page({
@@ -135,7 +137,7 @@ pages.get('/porosia/:id', async (c) => {
       description: copy[lang].confirmation.thanks,
       kind: 'confirmation',
       noindex: true,
-      body: confirmationView(lang, found.order, found.items),
+      body: confirmationView(lang, found.order, found.items, payUrl),
       data: { status: found.order.status, payment: found.order.payment_status },
     }),
   );

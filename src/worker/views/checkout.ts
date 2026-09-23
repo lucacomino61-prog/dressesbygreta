@@ -106,7 +106,7 @@ export function checkoutView(lang: Lang, zones: Zone[], card: boolean): Raw {
   </div>`;
 }
 
-export function confirmationView(lang: Lang, order: OrderRow, items: OrderItemRow[]): Raw {
+export function confirmationView(lang: Lang, order: OrderRow, items: OrderItemRow[], payUrl?: string): Raw {
   const t = copy[lang];
   const tc = t.confirmation;
   const status =
@@ -126,6 +126,7 @@ export function confirmationView(lang: Lang, order: OrderRow, items: OrderItemRo
     <div class="confirm__lead">
       ${order.status === 'cancelled' ? '' : html`<p class="body-lg">${tc.thanks}</p><p class="body">${tc.next}</p>`}
       <p class="ui-strong confirm__status">${status}</p>
+      ${payUrl ? html`<a class="btn" href="${payUrl}" data-no-router>${tc.retry}</a>` : ''}
     </div>
     <div class="confirm__grid">
       <section aria-labelledby="confirm-items">

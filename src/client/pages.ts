@@ -368,6 +368,11 @@ function checkoutPage(main: HTMLElement, lang: Lang): () => void {
         } catch {
           /* ignore */
         }
+        try {
+          sessionStorage.setItem('greta-just-ordered', body.id);
+        } catch {
+          /* ignore */
+        }
         if (body.payUrl) {
           location.href = body.payUrl;
           return;
@@ -410,7 +415,15 @@ function confirmationPage(main: HTMLElement): void {
     /* no data */
   }
   // The bag empties once the order stands: after a cash order, or once a card payment went through.
-  if (data.status && data.status !== 'cancelled' && data.status !== 'awaiting_payment') bag.clear();
+  // Only the order this bag just placed may empty it; an old confirmation reopened later must not.
+  let mine = false;
+  try {
+    mine = sessionStorage.getItem('greta-just-ordered') === location.pathname.split('/').pop();
+    if (mine && data.status !== 'awaiting_payment') sessionStorage.removeItem('greta-just-ordered');
+  } catch {
+    /* no storage: keep the bag */
+  }
+  if (mine && data.status && data.status !== 'cancelled' && data.status !== 'awaiting_payment') bag.clear();
 }
 
 /* ------------------------------------------------------------- test gateway -------------------------------------------------------------- */
