@@ -1,6 +1,7 @@
 /**
- * Product photographs in R2. The admin resizes in the browser and uploads every width at once;
- * the Worker only validates, stores and serves. Keys are never reused, so responses are immutable.
+ * Product photographs in Workers KV (binding PHOTOS). The admin resizes in the browser and uploads
+ * every width at once; the Worker only validates, stores and serves. Keys are never reused, so
+ * responses are immutable and the ETag can be derived from the key itself.
  */
 import type { Context } from 'hono';
 import type { AppEnv } from './types';
@@ -11,20 +12,22 @@ const MAX_BYTES = 4 * 1024 * 1024;
 export async function serveImage(c: Context<AppEnv>): Promise<Response> {
   const key = c.req.path.slice('/img/'.length);
   if (!KEY_RE.test(key)) return c.notFound();
+  const etag = `"${key.replace(/[^a-z0-9.]/gi, '-')}"`;
+  const headers = new Headers({
+    etag,
+    'cache-control': 'public, max-age=31536000, immutable',
+    'x-content-type-options': 'nosniff',
+  });
+  if (c.req.header('If-None-Match') === etag) return new Response(null, { status: 304, headers });
   const cache = import.meta.env.PROD ? caches.default : null;
   if (cache) {
     const hitRes = await cache.match(c.req.raw);
     if (hitRes) return hitRes;
   }
-  const obj = await c.env.IMAGES.get(key, { onlyIf: c.req.raw.headers });
-  if (!obj) return c.notFound();
-  const headers = new Headers();
-  obj.writeHttpMetadata(headers);
-  headers.set('etag', obj.httpEtag);
-  headers.set('cache-control', 'public, max-age=31536000, immutable');
-  headers.set('x-content-type-options', 'nosniff');
-  if (!('body' in obj) || !obj.body) return new Response(null, { status: 304, headers });
-  const res = new Response(obj.body, { headers });
+  const { value, metadata } = await c.env.PHOTOS.getWithMetadata<{ ct?: string }>(key, { type: 'arrayBuffer', cacheTtl: 86400 });
+  if (!value) return c.notFound();
+  headers.set('content-type', metadata?.ct ?? (key.endsWith('.jpg') ? 'image/jpeg' : 'image/webp'));
+  const res = new Response(value, { headers });
   if (cache) c.executionCtx.waitUntil(cache.put(c.req.raw, res.clone()));
   return res;
 }
@@ -72,13 +75,10 @@ export async function storeVariants(env: Env, key: string, meta: UploadMeta, for
     files.push([width, f]);
   }
   const contentType = meta.ext === 'jpg' ? 'image/jpeg' : 'image/webp';
-  // R2 needs a known length; a File's own stream does not carry one, its bytes do (max 4 MB each).
-  await Promise.all(
-    files.map(async ([width, f]) => env.IMAGES.put(`${key}/${width}.${meta.ext}`, await f.arrayBuffer(), { httpMetadata: { contentType } })),
-  );
+  await Promise.all(files.map(async ([width, f]) => env.PHOTOS.put(`${key}/${width}.${meta.ext}`, await f.arrayBuffer(), { metadata: { ct: contentType } })));
   return null;
 }
 
 export async function deleteVariants(env: Env, key: string, ext: string, widths: number[]): Promise<void> {
-  if (widths.length) await env.IMAGES.delete(widths.map((w) => `${key}/${w}.${ext}`));
+  await Promise.all(widths.map((w) => env.PHOTOS.delete(`${key}/${w}.${ext}`)));
 }

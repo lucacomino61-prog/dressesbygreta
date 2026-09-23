@@ -16,7 +16,9 @@
       "migrations_dir": "migrations"
     }
   ],
-  "r2_buckets": [{ "binding": "IMAGES", "bucket_name": "greta-images" }],
+  // Photographs live in Workers KV (R2 is not enabled on this account; the store in
+  // src/worker/images.ts is the only code that touches it, so moving to R2 later is one file).
+  "kv_namespaces": [{ "binding": "PHOTOS", "id": "74edd776307d404f861b9c37892495ae" }],
   // Releases stock held by card orders that were never paid.
   "triggers": { "crons": ["*/15 * * * *"] },
   "workers_dev": true,

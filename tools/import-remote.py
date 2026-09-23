@@ -1,6 +1,6 @@
 """
 One-off production import: the 39 Instagram dresses go into the LIVE database as drafts (no price,
-no stock, not visible), their photographs into the live R2 bucket, exactly in the shapes the admin
+no stock, not visible), their photographs into the live PHOTOS KV namespace, exactly in the shapes the admin
 would produce. Greta then sets prices and sizes in /admin and publishes each dress.
 
   uv run --with pillow python tools/import-remote.py            # dry run: prepares files, uploads nothing
@@ -21,13 +21,12 @@ import sys
 import tempfile
 import unicodedata
 import uuid
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-BUCKET = "greta-images"
+BINDING = "PHOTOS"
 WIDTHS = (480, 960, 1600)
 SIZES = ("34", "36", "38", "40", "42")
 
@@ -112,15 +111,14 @@ def main() -> None:
         print("dry run: pass --go to upload and insert")
         return
 
-    def put(pair: tuple[Path, str]) -> str:
-        f, key = pair
-        run(f'npx wrangler r2 object put "{BUCKET}/{key}" --file "{f}" --content-type image/webp --remote')
-        return key
-
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        for i, _ in enumerate(pool.map(put, uploads), 1):
-            if i % 20 == 0 or i == len(uploads):
-                print(f"uploaded {i}/{len(uploads)}", flush=True)
+    # One bulk write to the PHOTOS namespace (values base64, content type in the metadata).
+    bulk = tmp / "photos.json"
+    bulk.write_text(
+        json.dumps([{"key": key, "value": base64.b64encode(f.read_bytes()).decode(), "base64": True, "metadata": {"ct": "image/webp"}} for f, key in uploads]),
+        encoding="utf-8",
+    )
+    run(f'npx wrangler kv bulk put "{bulk}" --binding {BINDING} --remote')
+    print(f"uploaded {len(uploads)} photo files", flush=True)
     run(f'npx wrangler d1 execute greta --remote --file "{sql_file}" --yes')
     print("inserted: all dresses are drafts; Greta publishes them from /admin once priced")
 
