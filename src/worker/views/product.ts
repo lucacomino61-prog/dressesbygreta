@@ -1,0 +1,93 @@
+/** A dress: every photograph down the left, the caption held beside it, the next dress at the foot. */
+import { photoAt, type Product, type Size } from '../../shared/catalog';
+import { copy, href, type Lang } from '../../shared/copy';
+import { html, raw, type Raw } from '../../shared/html';
+import { SITE } from '../site';
+import { bagData } from './shop';
+import { flipId, folio, plate, price, sizePicker } from './parts';
+
+export function productView(lang: Lang, p: Product, index: number, total: number, next: Product | null, size?: Size): Raw {
+  const t = copy[lang];
+  const sold = !Object.values(p.stock).some((n) => n > 0);
+  const paragraphs = p.description.split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
+  return html`<article class="product" data-product="${bagData(p)}">
+      <div class="product__gallery">
+        <ol class="product__photos" aria-label="${t.a11y.gallery}" data-gallery>
+          ${p.photos.map(
+            (ph, i) =>
+              html`<li class="product__photo">${plate(ph, {
+                alt: ph.alt || (i === 0 ? p.name : ''),
+                sizes: '(min-width: 1024px) 56vw, 100vw',
+                eager: i === 0,
+                target: 1600,
+                flip: i === 0 ? flipId(p) : undefined,
+                cls: 'product__plate',
+              })}</li>`,
+          )}
+        </ol>
+        ${p.photos.length > 1 ? html`<p class="product__count" aria-hidden="true"><span data-gallery-i>1</span> / ${p.photos.length}</p>` : ''}
+      </div>
+
+      <div class="product__info">
+        <div class="product__hold">
+          <p class="product__folio">${folio(index, total)}</p>
+          <h1 class="product__name">${p.name}</h1>
+          ${price(p, lang, 'price product__price')}
+          <form class="product__form" data-add data-product="${bagData(p)}" novalidate>
+            ${sold ? html`<p class="spread__sold">${t.shop.soldOut}</p>` : sizePicker(p, lang, 'size', size)}
+            <p class="pick__hint small" data-pick-hint aria-live="polite"></p>
+            <button class="btn btn--wide" type="submit" data-add-btn${sold ? raw(' disabled') : ''}>${sold ? t.shop.soldOut : t.product.add}</button>
+          </form>
+          <p class="small product__guide">${t.sizes.guide}</p>
+          ${paragraphs.length
+            ? html`<details class="acc" open><summary class="acc__sum">${t.product.description}</summary><div class="acc__body">${paragraphs.map((s) => html`<p class="body">${s}</p>`)}</div></details>`
+            : ''}
+          <details class="acc"><summary class="acc__sum">${t.product.delivery}</summary><div class="acc__body"><p class="body">${t.product.deliveryBody}</p></div></details>
+          <p class="product__links">
+            <a class="tlink" href="${SITE.message}" target="_blank" rel="noopener">${t.product.rent}</a>
+            ${p.instagramUrl ? html`<a class="tlink" href="${p.instagramUrl}" target="_blank" rel="noopener">${t.product.instagram}</a>` : ''}
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <div class="buybar" data-buybar hidden>
+      <span class="buybar__name">${p.name}</span>
+      ${price(p, lang, 'price buybar__price')}
+      <button class="btn" type="button" data-buybar-btn${sold ? raw(' disabled') : ''}>${sold ? t.shop.soldOut : t.product.add}</button>
+    </div>
+
+    ${next
+      ? html`<nav class="next-dress" aria-label="${t.product.next}">
+          <a class="next-dress__link" href="${href(`/fustan/${next.slug}`, lang)}" data-fly-link>
+            ${plate(next.photos[0], { alt: '', sizes: '(min-width: 1024px) 40vw, 100vw', target: 960, flip: flipId(next), cls: 'next-dress__plate', tag: 'span' })}
+            <span class="next-dress__text"><span class="next-dress__label">${t.product.next}</span><span class="next-dress__name">${next.name}</span></span>
+          </a>
+          <a class="tlink next-dress__back" href="${href('/dyqani', lang)}">${t.product.back}</a>
+        </nav>`
+      : ''}`;
+}
+
+export function productJsonLd(origin: string, lang: Lang, p: Product) {
+  const available = Object.values(p.stock).some((n) => n > 0);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name,
+    description: p.description || undefined,
+    image: p.photos.slice(0, 4).map((ph) => origin + photoAt(ph, 1600)),
+    color: p.color || undefined,
+    brand: { '@type': 'Brand', name: SITE.name },
+    offers:
+      p.price !== null
+        ? {
+            '@type': 'Offer',
+            url: origin + href(`/fustan/${p.slug}`, lang),
+            priceCurrency: 'ALL',
+            price: p.price,
+            availability: available ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
+            itemCondition: 'https://schema.org/NewCondition',
+          }
+        : undefined,
+  };
+}

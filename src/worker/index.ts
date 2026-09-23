@@ -1,0 +1,54 @@
+/**
+ * Dresses by Greta: one Worker for the shop, the admin API and the photographs. Static files
+ * (the built client, public/) are served by Workers Static Assets before this code runs.
+ */
+import { Hono } from 'hono';
+import { serveImage } from './images';
+import { releaseExpiredCardOrders } from './orders';
+import { adminApi } from './routes/admin-api';
+import { notFound, pages } from './routes/pages';
+import { publicApi } from './routes/public-api';
+import type { AppEnv } from './types';
+
+const app = new Hono<AppEnv>();
+
+// Production only: Vite's dev server needs inline scripts and a websocket.
+const CSP = [
+  "default-src 'self'",
+  "img-src 'self' data: blob:",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "form-action 'self'",
+  "base-uri 'self'",
+  "frame-ancestors 'none'",
+].join('; ');
+
+app.use('*', async (c, next) => {
+  await next();
+  c.header('x-content-type-options', 'nosniff');
+  c.header('referrer-policy', 'strict-origin-when-cross-origin');
+  c.header('permissions-policy', 'camera=(), microphone=(), geolocation=()');
+  if (import.meta.env.PROD && (c.res.headers.get('content-type') ?? '').includes('text/html')) {
+    c.header('content-security-policy', CSP);
+    c.header('x-frame-options', 'DENY');
+  }
+});
+
+app.get('/img/*', serveImage);
+app.route('/api/admin', adminApi);
+app.route('/api', publicApi);
+app.route('/', pages);
+app.notFound((c) => (c.req.path.startsWith('/api/') ? c.json({ error: 'not_found' }, 404) : notFound(c)));
+app.onError((err, c) => {
+  console.error(err);
+  return c.req.path.startsWith('/api/') ? c.json({ error: 'server_error' }, 500) : c.text('Server error', 500);
+});
+
+export default {
+  fetch: app.fetch,
+  async scheduled(_controller, env, ctx) {
+    ctx.waitUntil(releaseExpiredCardOrders(env));
+  },
+} satisfies ExportedHandler<Env>;

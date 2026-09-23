@@ -1,0 +1,263 @@
+/**
+ * Motion. GSAP is the only engine and gsap.ticker the only scheduler (DESIGN.md); no pin, no snap,
+ * no smooth-scroll library. Every entrance starts from the visible default in CSS (--p: 1,
+ * opacity 1); hidden start states are set only inside the no-preference branch, so a
+ * reduced-motion visitor or a failed script still sees the complete page.
+ *
+ * The page turn: spreads are sticky sheets; as the next one slides up over the last, the last
+ * recedes to 0.94 and 45% and the newcomer prints in under the scan bar.
+ */
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
+ScrollTrigger.defaults({ invalidateOnRefresh: true });
+
+export const reducedMotion = (): boolean => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+export { gsap, ScrollTrigger };
+
+let mm: gsap.MatchMedia | null = null;
+
+/** Tears down the previous page's triggers and tweens and builds the new page's. */
+export function pageMotion(main: HTMLElement, opts: { arrivedByFlight: boolean }): void {
+  mm?.revert();
+  mm = gsap.matchMedia();
+  const kind = main.dataset.page ?? '';
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+
+  mm.add('(prefers-reduced-motion: no-preference)', () => {
+    if (kind === 'home') home(main);
+    if (kind === 'shop') shop(main, opts.arrivedByFlight);
+    if (kind === 'product') product(main, opts.arrivedByFlight);
+    if (kind === 'confirmation') confirmation(main);
+  });
+
+  // State, not decoration: over the hero the header is transparent; it turns solid once the
+  // photograph has left. Every other page keeps it solid.
+  mm.add('all', () => {
+    if (!nav) return;
+    const overPhoto = main.dataset.navMode === 'photo';
+    nav.classList.toggle('is-solid', !overPhoto);
+    nav.classList.remove('is-scrolled');
+    if (overPhoto && main.querySelector('#hero')) {
+      ScrollTrigger.create({ trigger: '#hero', start: 'bottom 60px', end: 'max', toggleClass: { targets: nav, className: 'is-scrolled' } });
+    }
+  });
+
+  requestAnimationFrame(() => ScrollTrigger.refresh());
+}
+
+/** Prints a plate (0 to 1 on --p) once, after its photograph has decoded (never waits over 2.5 s). */
+export function printPlate(plate: HTMLElement, delay = 0, duration = 0.9): gsap.core.Tween | null {
+  const img = plate.querySelector<HTMLImageElement>('img');
+  plate.style.setProperty('--p', '0');
+  const state = { p: 0 };
+  const tween = gsap.to(state, {
+    p: 1,
+    duration,
+    delay,
+    ease: 'power3.out',
+    paused: true,
+    onUpdate: () => plate.style.setProperty('--p', state.p.toFixed(4)),
+  });
+  const ready = !img || (img.complete && img.naturalWidth > 0) ? Promise.resolve() : new Promise<void>((r) => {
+    img.addEventListener('load', () => r(), { once: true });
+    img.addEventListener('error', () => r(), { once: true });
+  });
+  void Promise.race([ready, new Promise((r) => setTimeout(r, 2500))]).then(() => tween.play());
+  return tween;
+}
+
+function home(main: HTMLElement): void {
+  gsap.from('.hero__title', { opacity: 0, letterSpacing: '0.3em', duration: 0.9, ease: 'expo.out' });
+  gsap.from('.hero__content', { opacity: 0, y: 10, duration: 0.5, ease: 'expo.out', delay: 0.3 });
+  const hero = main.querySelector<HTMLElement>('.hero__plate');
+  if (hero) printPlate(hero, 0, 1.1);
+  gsap.to('.hero__plate', { '--drift': '-6%', ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero__mark', { opacity: 0, yPercent: 20, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  // Featured sleeves: the browser holds each one (position: sticky); GSAP only scrubs.
+  const plates = gsap.utils.toArray<HTMLElement>('.rail__plate', main);
+  const holds = gsap.utils.toArray<HTMLElement>('.rail .hold', main);
+  plates.forEach((plate, i) => {
+    const hold = holds[i];
+    if (!hold) return;
+    const prevHold = holds[i - 1];
+    const photo = plate.querySelector<HTMLElement>('.rail__photo');
+    const arrival = prevHold
+      ? { trigger: prevHold, start: 'bottom bottom', end: 'bottom 50%', scrub: true }
+      : { trigger: hold, start: 'top bottom', end: 'bottom bottom', scrub: true };
+    if (photo) gsap.fromTo(photo, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: arrival });
+    const prev = plates[i - 1];
+    if (prev && prevHold) {
+      gsap.to(prev.querySelector('.rail__photo .plate__inner'), {
+        scale: 0.94,
+        opacity: 0.45,
+        ease: 'none',
+        scrollTrigger: { trigger: prevHold, start: 'bottom bottom', end: 'bottom top', scrub: true },
+      });
+      gsap.to(prev.querySelector('.rail__caption'), { opacity: 0, ease: 'none', scrollTrigger: { trigger: prevHold, start: 'bottom bottom', end: 'bottom 60%', scrub: true } });
+    }
+  });
+
+  // The size numerals rise out of their own baseline, once, as the band arrives.
+  const nums = gsap.utils.toArray<HTMLElement>('.sb__n', main);
+  if (nums.length) {
+    gsap.from(nums, {
+      yPercent: 100,
+      duration: 0.9,
+      ease: 'expo.out',
+      stagger: 0.06,
+      scrollTrigger: { trigger: '.sizes-band__row', start: 'top 85%', once: true },
+    });
+  }
+}
+
+function shop(main: HTMLElement, arrivedByFlight: boolean): void {
+  const spreads = gsap.utils.toArray<HTMLElement>('.spread', main);
+  const list = main.querySelector<HTMLElement>('.spreads');
+  if (list && spreads.length) {
+    const first = spreads[0]!;
+    if (!arrivedByFlight) {
+      const p = first.querySelector<HTMLElement>('.spread__plate');
+      const s = first.querySelector<HTMLElement>('.spread__second');
+      if (p) printPlate(p, 0.05, 1);
+      if (s) printPlate(s, 0.25, 0.9);
+      gsap.from(first.querySelector('.spread__cap'), { opacity: 0, y: 12, duration: 0.6, ease: 'expo.out', delay: 0.35 });
+    }
+    // Scroll positions are computed from the list (never from a stuck sheet, whose box moves).
+    const geo = () => {
+      const top = list.getBoundingClientRect().top + window.scrollY;
+      const h = first.getBoundingClientRect().height;
+      const stick = parseFloat(getComputedStyle(first).top) || 0;
+      return { top, h, stick };
+    };
+    spreads.forEach((sp, i) => {
+      if (i === 0) return;
+      const prev = spreads[i - 1]!;
+      const enter = () => {
+        const g = geo();
+        return g.top + i * g.h - window.innerHeight;
+      };
+      const stuck = () => {
+        const g = geo();
+        return g.top + i * g.h - g.stick;
+      };
+      const plate = sp.querySelector<HTMLElement>('.spread__plate');
+      const second = sp.querySelector<HTMLElement>('.spread__second');
+      const cap = sp.querySelector<HTMLElement>('.spread__cap');
+      // The print runs ahead of the sheet's edge, so the scan line visibly leads it.
+      if (plate) gsap.fromTo(plate, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { start: enter, end: () => (enter() + stuck()) / 2, scrub: true } });
+      if (second) gsap.fromTo(second, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { start: () => enter() + (stuck() - enter()) * 0.2, end: () => enter() + (stuck() - enter()) * 0.7, scrub: true } });
+      if (cap) gsap.fromTo(cap, { opacity: 0, y: 16 }, { opacity: 1, y: 0, ease: 'none', scrollTrigger: { start: () => enter() + (stuck() - enter()) * 0.4, end: stuck, scrub: true } });
+      gsap.to(prev.querySelector('.spread__page'), { scale: 0.94, opacity: 0.45, ease: 'none', scrollTrigger: { start: enter, end: stuck, scrub: true } });
+    });
+  }
+
+  const tiles = gsap.utils.toArray<HTMLElement>('.toc__plate', main);
+  if (tiles.length) {
+    gsap.set(tiles, { '--p': 0 });
+    ScrollTrigger.batch(tiles, {
+      start: 'top 92%',
+      once: true,
+      onEnter: (b) => gsap.to(b, { '--p': 1, duration: 0.6, ease: 'power3.out', stagger: 0.05, overwrite: true }),
+    });
+  }
+}
+
+function product(main: HTMLElement, arrivedByFlight: boolean): void {
+  const plates = gsap.utils.toArray<HTMLElement>('.product__plate', main);
+  plates.forEach((pl, i) => {
+    if (i === 0) {
+      if (!arrivedByFlight) printPlate(pl, 0.05, 1);
+      return;
+    }
+    gsap.set(pl, { '--p': 0 });
+    ScrollTrigger.create({ trigger: pl, start: 'top 85%', once: true, onEnter: () => printPlate(pl, 0, 0.8) });
+  });
+  gsap.from(main.querySelectorAll('.product__hold > *'), { opacity: 0, y: 10, duration: 0.55, ease: 'expo.out', stagger: 0.04, delay: arrivedByFlight ? 0.35 : 0.15 });
+  const next = main.querySelector<HTMLElement>('.next-dress__plate');
+  if (next) {
+    gsap.set(next, { '--p': 0 });
+    ScrollTrigger.create({ trigger: next, start: 'top 80%', once: true, onEnter: () => printPlate(next, 0, 0.9) });
+  }
+}
+
+function confirmation(main: HTMLElement): void {
+  gsap.from(main.querySelector('.confirm__num'), { yPercent: 60, opacity: 0, duration: 1, ease: 'expo.out' });
+  gsap.from(main.querySelectorAll('.confirm__lead > *, .confirm__grid > *'), { opacity: 0, y: 10, duration: 0.6, ease: 'expo.out', stagger: 0.06, delay: 0.25 });
+}
+
+/**
+ * The photograph's flight between pages: a clone of the source image travels from where it was to
+ * where the same dress sits on the next page, then hands over to the real image.
+ */
+export interface Flight {
+  clone: HTMLImageElement;
+  id: string;
+}
+
+export function takeOff(plate: HTMLElement): Flight | null {
+  const img = plate.querySelector<HTMLImageElement>('img');
+  const id = plate.dataset.flipId;
+  if (!img || !id || reducedMotion()) return null;
+  const r = img.getBoundingClientRect();
+  if (r.bottom < 0 || r.top > window.innerHeight || r.width < 2) return null;
+  const clone = document.createElement('img');
+  clone.src = img.currentSrc || img.src;
+  clone.alt = '';
+  clone.className = 'flight';
+  Object.assign(clone.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, objectPosition: getComputedStyle(img).objectPosition });
+  document.body.appendChild(clone);
+  return { clone, id };
+}
+
+export async function land(f: Flight, main: HTMLElement): Promise<boolean> {
+  const target = main.querySelector<HTMLElement>(`[data-flip-id="${CSS.escape(f.id)}"]`);
+  const img = target?.querySelector<HTMLImageElement>('img');
+  if (!target || !img) {
+    await gsap.to(f.clone, { opacity: 0, duration: 0.25, ease: 'power2.out' });
+    f.clone.remove();
+    return false;
+  }
+  target.style.setProperty('--p', '1');
+  img.style.visibility = 'hidden';
+  const r = img.getBoundingClientRect();
+  await gsap.to(f.clone, {
+    left: r.left,
+    top: r.top,
+    width: r.width,
+    height: r.height,
+    duration: 0.75,
+    ease: 'expo.inOut',
+    onStart: () => f.clone.style.setProperty('object-position', getComputedStyle(img).objectPosition),
+  });
+  img.style.visibility = '';
+  await gsap.to(f.clone, { opacity: 0, duration: 0.18, ease: 'none' });
+  f.clone.remove();
+  return true;
+}
+
+/** A dress drops into the bag: its photograph shrinks into the header's bag link. */
+export function dropIntoBag(from: HTMLElement | null): void {
+  const bagBtn = document.querySelector<HTMLElement>('.nav [data-open="bag"]');
+  const count = document.querySelector<HTMLElement>('[data-bag-count]');
+  if (count && !reducedMotion()) gsap.fromTo(count, { scale: 1.6 }, { scale: 1, duration: 0.5, ease: 'expo.out', delay: from ? 0.55 : 0 });
+  const img = from?.querySelector<HTMLImageElement>('img');
+  if (!img || !bagBtn || reducedMotion()) return;
+  const a = img.getBoundingClientRect();
+  const b = bagBtn.getBoundingClientRect();
+  if (a.width < 2 || b.width < 2) return;
+  const clone = document.createElement('img');
+  clone.src = img.currentSrc || img.src;
+  clone.alt = '';
+  clone.className = 'flight';
+  Object.assign(clone.style, { left: `${a.left}px`, top: `${a.top}px`, width: `${a.width}px`, height: `${a.height}px` });
+  document.body.appendChild(clone);
+  const w = 28;
+  gsap
+    .timeline({ onComplete: () => clone.remove() })
+    .to(clone, { left: b.left + b.width / 2 - w / 2, top: b.top + b.height / 2 - (w * 4) / 6, width: w, height: (w * 4) / 3, duration: 0.6, ease: 'power3.in' })
+    .to(clone, { opacity: 0, duration: 0.12, ease: 'none' });
+}

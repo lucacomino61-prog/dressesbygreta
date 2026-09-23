@@ -14,3 +14,5 @@ tools/.venv/
 .impeccable/live/
 public/raw-cut/
 public/raw-src/
+.impeccable/questions/
+.impeccable/review/

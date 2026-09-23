@@ -1,0 +1,322 @@
+/** /api/admin/*: Greta's back office. Every route below the sign-in block requires a session. */
+import { Hono } from 'hono';
+import { CATEGORIES, SIZES, isCategory, slugify, type Stock } from '../../shared/catalog';
+import { clearHits, adminGet, adminList, getSetting, getZones, hit, setSetting, uniqueSlug } from '../db';
+import { clientIp, devLoginAllowed, endSession, isAdmin, requireAdmin, startSession, verifyPassword } from '../auth';
+import { deleteVariants, parseUploadMeta, storeVariants } from '../images';
+import { allowedNext, getOrder, setOrderStatus, setPaymentStatus, type OrderStatus, type PaymentStatus } from '../orders';
+import { gatewayFor } from '../payments';
+import type { AppEnv } from '../types';
+
+export const adminApi = new Hono<AppEnv>();
+
+/* --------------------------------------------------------------- sign in --------------------------------------------------------------- */
+
+adminApi.get('/me', async (c) =>
+  c.json({ admin: await isAdmin(c), devLogin: devLoginAllowed(c), passwordSet: Boolean(c.env.ADMIN_PASSWORD_HASH) }, 200, { 'cache-control': 'no-store' }),
+);
+
+adminApi.post('/login', async (c) => {
+  if (c.req.header('Origin') !== new URL(c.req.url).origin) return c.json({ error: 'bad_origin' }, 403);
+  if (!c.env.ADMIN_PASSWORD_HASH) return c.json({ error: 'no_password_set' }, 503);
+  const key = `login:${clientIp(c)}`;
+  if (!(await hit(c.env.DB, key, 10, 15 * 60))) return c.json({ error: 'too_many_attempts' }, 429);
+  const body = (await c.req.json().catch(() => ({}))) as { password?: unknown };
+  const password = typeof body.password === 'string' ? body.password.slice(0, 200) : '';
+  if (!password || !(await verifyPassword(c.env.ADMIN_PASSWORD_HASH, password))) return c.json({ error: 'wrong_password' }, 401);
+  await clearHits(c.env.DB, key);
+  await startSession(c);
+  return c.json({ ok: true });
+});
+
+adminApi.post('/dev-login', async (c) => {
+  if (!devLoginAllowed(c)) return c.json({ error: 'not_available' }, 404);
+  if (c.req.header('Origin') !== new URL(c.req.url).origin) return c.json({ error: 'bad_origin' }, 403);
+  await startSession(c);
+  return c.json({ ok: true });
+});
+
+adminApi.post('/logout', (c) => {
+  endSession(c);
+  return c.json({ ok: true });
+});
+
+/* ---------------------------------------------------------- everything else ------------------------------------------------------------ */
+
+const open = new Set(['/api/admin/me', '/api/admin/login', '/api/admin/dev-login', '/api/admin/logout']);
+adminApi.use('*', async (c, next) => (open.has(c.req.path) ? next() : requireAdmin(c, next)));
+adminApi.use('*', async (c, next) => {
+  await next();
+  c.header('cache-control', 'no-store');
+});
+
+adminApi.get('/summary', async (c) => {
+  const db = c.env.DB;
+  const [p, o, low] = await db.batch([
+    db.prepare(`SELECT status, COUNT(*) AS n FROM products GROUP BY status`),
+    db.prepare(`SELECT status, COUNT(*) AS n FROM orders GROUP BY status`),
+    db.prepare(`SELECT COUNT(*) AS n FROM products p WHERE p.status = 'published' AND NOT EXISTS (SELECT 1 FROM product_sizes s WHERE s.product_id = p.id AND s.stock > 0)`),
+  ]);
+  const count = (rows: unknown[] | undefined, key: string) => ((rows ?? []) as { status: string; n: number }[]).find((r) => r.status === key)?.n ?? 0;
+  return c.json({
+    published: count(p?.results, 'published'),
+    drafts: count(p?.results, 'draft'),
+    newOrders: count(o?.results, 'new'),
+    awaitingPayment: count(o?.results, 'awaiting_payment'),
+    confirmed: count(o?.results, 'confirmed'),
+    soldOut: ((low?.results ?? [])[0] as { n?: number } | undefined)?.n ?? 0,
+  });
+});
+
+/* -------------------------------------------------------------- products --------------------------------------------------------------- */
+
+adminApi.get('/products', async (c) => c.json(await adminList(c.env.DB)));
+
+adminApi.post('/products', async (c) => {
+  const body = (await c.req.json().catch(() => ({}))) as { nameSq?: unknown };
+  const nameSq = typeof body.nameSq === 'string' ? body.nameSq.trim().slice(0, 80) : '';
+  if (!nameSq) return c.json({ error: 'name_required' }, 400);
+  const id = crypto.randomUUID();
+  const slug = await uniqueSlug(c.env.DB, slugify(nameSq));
+  const db = c.env.DB;
+  await db.batch([
+    db.prepare(`INSERT INTO products (id, slug, name_sq, sort) VALUES (?, ?, ?, (SELECT COALESCE(MIN(sort), 0) - 1 FROM products))`).bind(id, slug, nameSq),
+    ...SIZES.map((s) => db.prepare('INSERT INTO product_sizes (product_id, size, stock) VALUES (?, ?, 0)').bind(id, s)),
+  ]);
+  return c.json(await adminGet(db, id), 201);
+});
+
+adminApi.get('/products/:id', async (c) => {
+  const p = await adminGet(c.env.DB, c.req.param('id'));
+  return p ? c.json(p) : c.json({ error: 'not_found' }, 404);
+});
+
+const text = (v: unknown, max: number): string | null => (typeof v === 'string' ? v.trim().slice(0, max) : null);
+const lek = (v: unknown): number | null | undefined => {
+  if (v === null || v === '') return null;
+  const n = Number(v);
+  return Number.isInteger(n) && n > 0 && n <= 10_000_000 ? n : undefined;
+};
+
+adminApi.put('/products/:id', async (c) => {
+  const db = c.env.DB;
+  const id = c.req.param('id');
+  const cur = await adminGet(db, id);
+  if (!cur) return c.json({ error: 'not_found' }, 404);
+  const b = (await c.req.json().catch(() => ({}))) as Record<string, unknown>;
+  const errors: string[] = [];
+
+  const nameSq = text(b.nameSq, 80) ?? cur.nameSq;
+  if (!nameSq) errors.push('nameSq');
+  const nameEn = text(b.nameEn, 80) ?? cur.nameEn;
+  const descriptionSq = text(b.descriptionSq, 2000) ?? cur.descriptionSq;
+  const descriptionEn = text(b.descriptionEn, 2000) ?? cur.descriptionEn;
+  const color = text(b.color, 30) ?? cur.color;
+  const price = 'price' in b ? lek(b.price) : cur.price;
+  if (price === undefined) errors.push('price');
+  const comparePrice = 'comparePrice' in b ? lek(b.comparePrice) : cur.comparePrice;
+  if (comparePrice === undefined) errors.push('comparePrice');
+  const categories = Array.isArray(b.categories) ? [...new Set(b.categories.filter(isCategory))] : cur.categories;
+  const featured = typeof b.featured === 'boolean' ? b.featured : cur.featured;
+  const instagramUrl = text(b.instagramUrl, 200) ?? cur.instagramUrl;
+  if (instagramUrl && !/^https:\/\/(www\.)?instagram\.com\/[A-Za-z0-9_./?=&-]+$/.test(instagramUrl)) errors.push('instagramUrl');
+  const status = b.status === 'published' || b.status === 'draft' ? b.status : cur.status;
+
+  const stock: Stock = { ...cur.stock };
+  if (b.stock && typeof b.stock === 'object') {
+    for (const s of SIZES) {
+      const v = (b.stock as Record<string, unknown>)[s];
+      if (v === undefined) continue;
+      const n = Number(v);
+      if (Number.isInteger(n) && n >= 0 && n <= 99) stock[s] = n;
+      else errors.push(`stock.${s}`);
+    }
+  }
+
+  let slug = cur.slug;
+  const wanted = text(b.slug, 60);
+  if (wanted !== null && wanted !== cur.slug) {
+    const clean = slugify(wanted);
+    if (!clean) errors.push('slug');
+    else slug = await uniqueSlug(db, clean, id);
+  }
+  if (errors.length) return c.json({ error: 'invalid', fields: errors }, 400);
+
+  // A dress can only go live with a price and at least one photograph.
+  if (status === 'published') {
+    const reasons: string[] = [];
+    if (price === null || price === undefined) reasons.push('price');
+    if (!cur.photos.length) reasons.push('photo');
+    if (reasons.length) return c.json({ error: 'cannot_publish', reasons }, 400);
+  }
+
+  await db.batch([
+    db
+      .prepare(
+        `UPDATE products SET slug = ?, name_sq = ?, name_en = ?, description_sq = ?, description_en = ?, price = ?, compare_price = ?, color = ?,
+         categories = ?, status = ?, featured = ?, instagram_url = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
+      )
+      .bind(slug, nameSq, nameEn, descriptionSq, descriptionEn, price ?? null, comparePrice ?? null, color, JSON.stringify(categories), status, featured ? 1 : 0, instagramUrl, id),
+    ...SIZES.map((s) =>
+      db
+        .prepare('INSERT INTO product_sizes (product_id, size, stock) VALUES (?, ?, ?) ON CONFLICT (product_id, size) DO UPDATE SET stock = excluded.stock')
+        .bind(id, s, stock[s]),
+    ),
+  ]);
+  return c.json(await adminGet(db, id));
+});
+
+adminApi.delete('/products/:id', async (c) => {
+  const db = c.env.DB;
+  const p = await adminGet(db, c.req.param('id'));
+  if (!p) return c.json({ error: 'not_found' }, 404);
+  await Promise.all(p.photos.map((ph) => deleteVariants(c.env, ph.key, ph.ext, ph.widths)));
+  await db.prepare('DELETE FROM products WHERE id = ?').bind(p.id).run();
+  return c.json({ ok: true });
+});
+
+adminApi.post('/products/reorder', async (c) => {
+  const b = (await c.req.json().catch(() => ({}))) as { ids?: unknown };
+  const ids = Array.isArray(b.ids) ? b.ids.filter((x): x is string => typeof x === 'string').slice(0, 1000) : [];
+  if (!ids.length) return c.json({ error: 'invalid' }, 400);
+  const db = c.env.DB;
+  await db.batch(ids.map((id, i) => db.prepare('UPDATE products SET sort = ? WHERE id = ?').bind(i, id)));
+  return c.json({ ok: true });
+});
+
+/* --------------------------------------------------------------- photos ---------------------------------------------------------------- */
+
+adminApi.post('/products/:id/photos', async (c) => {
+  const db = c.env.DB;
+  const productId = c.req.param('id');
+  const exists = await db.prepare('SELECT id FROM products WHERE id = ?').bind(productId).first();
+  if (!exists) return c.json({ error: 'not_found' }, 404);
+  const count = await db.prepare('SELECT COUNT(*) AS n FROM product_images WHERE product_id = ?').bind(productId).first<{ n: number }>();
+  if ((count?.n ?? 0) >= 12) return c.json({ error: 'too_many_photos' }, 400);
+
+  const form = await c.req.formData();
+  let metaRaw: unknown = null;
+  try {
+    metaRaw = JSON.parse(String(form.get('meta') ?? ''));
+  } catch {
+    /* handled below */
+  }
+  const meta = parseUploadMeta(metaRaw);
+  if (!meta) return c.json({ error: 'invalid_meta' }, 400);
+  const imageId = crypto.randomUUID();
+  const key = `p/${productId}/${imageId}`;
+  const problem = await storeVariants(c.env, key, meta, form);
+  if (problem) return c.json({ error: 'invalid_file', detail: problem }, 400);
+  const altSq = text(form.get('altSq'), 160) ?? '';
+  const altEn = text(form.get('altEn'), 160) ?? '';
+  await db
+    .prepare(
+      `INSERT INTO product_images (id, product_id, key, ext, widths, w, h, lqip, alt_sq, alt_en, sort)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT COALESCE(MAX(sort), -1) + 1 FROM product_images WHERE product_id = ?))`,
+    )
+    .bind(imageId, productId, key, meta.ext, JSON.stringify(meta.widths), meta.w, meta.h, meta.lqip, altSq, altEn, productId)
+    .run();
+  await db.prepare(`UPDATE products SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`).bind(productId).run();
+  return c.json(await adminGet(db, productId), 201);
+});
+
+adminApi.put('/products/:id/photos/order', async (c) => {
+  const db = c.env.DB;
+  const productId = c.req.param('id');
+  const b = (await c.req.json().catch(() => ({}))) as { ids?: unknown };
+  const ids = Array.isArray(b.ids) ? b.ids.filter((x): x is string => typeof x === 'string').slice(0, 50) : [];
+  if (!ids.length) return c.json({ error: 'invalid' }, 400);
+  await db.batch(ids.map((id, i) => db.prepare('UPDATE product_images SET sort = ? WHERE id = ? AND product_id = ?').bind(i, id, productId)));
+  return c.json(await adminGet(db, productId));
+});
+
+adminApi.patch('/photos/:photoId', async (c) => {
+  const db = c.env.DB;
+  const b = (await c.req.json().catch(() => ({}))) as Record<string, unknown>;
+  const row = await db.prepare('SELECT product_id FROM product_images WHERE id = ?').bind(c.req.param('photoId')).first<{ product_id: string }>();
+  if (!row) return c.json({ error: 'not_found' }, 404);
+  await db
+    .prepare('UPDATE product_images SET alt_sq = COALESCE(?, alt_sq), alt_en = COALESCE(?, alt_en) WHERE id = ?')
+    .bind(text(b.altSq, 160), text(b.altEn, 160), c.req.param('photoId'))
+    .run();
+  return c.json(await adminGet(db, row.product_id));
+});
+
+adminApi.delete('/photos/:photoId', async (c) => {
+  const db = c.env.DB;
+  const row = await db
+    .prepare('SELECT product_id, key, ext, widths FROM product_images WHERE id = ?')
+    .bind(c.req.param('photoId'))
+    .first<{ product_id: string; key: string; ext: string; widths: string }>();
+  if (!row) return c.json({ error: 'not_found' }, 404);
+  const left = await db.prepare('SELECT COUNT(*) AS n FROM product_images WHERE product_id = ?').bind(row.product_id).first<{ n: number }>();
+  const live = await db.prepare(`SELECT status FROM products WHERE id = ?`).bind(row.product_id).first<{ status: string }>();
+  // A published dress keeps at least one photograph; unpublish it first to remove the last one.
+  if ((left?.n ?? 0) <= 1 && live?.status === 'published') return c.json({ error: 'last_photo_of_published' }, 400);
+  await deleteVariants(c.env, row.key, row.ext, JSON.parse(row.widths) as number[]);
+  await db.prepare('DELETE FROM product_images WHERE id = ?').bind(c.req.param('photoId')).run();
+  return c.json(await adminGet(db, row.product_id));
+});
+
+/* --------------------------------------------------------------- orders ---------------------------------------------------------------- */
+
+adminApi.get('/orders', async (c) => {
+  const status = c.req.query('status');
+  const db = c.env.DB;
+  const where = status && ['awaiting_payment', 'new', 'confirmed', 'shipped', 'delivered', 'cancelled'].includes(status) ? 'WHERE o.status = ?' : '';
+  const stmt = db.prepare(
+    `SELECT o.id, o.number, o.status, o.payment_method, o.payment_status, o.customer_name, o.phone, o.city, o.total, o.delivery_fee, o.created_at,
+            (SELECT COALESCE(SUM(qty), 0) FROM order_items i WHERE i.order_id = o.id) AS pieces
+     FROM orders o ${where} ORDER BY o.created_at DESC LIMIT 300`,
+  );
+  const rows = await (where ? stmt.bind(status) : stmt).all();
+  return c.json(rows.results ?? []);
+});
+
+adminApi.get('/orders/:id', async (c) => {
+  const o = await getOrder(c.env.DB, c.req.param('id'));
+  if (!o) return c.json({ error: 'not_found' }, 404);
+  return c.json({ ...o, next: allowedNext(o.order.status) });
+});
+
+adminApi.patch('/orders/:id', async (c) => {
+  const db = c.env.DB;
+  const id = c.req.param('id');
+  const b = (await c.req.json().catch(() => ({}))) as { status?: unknown; paymentStatus?: unknown };
+  if (typeof b.status === 'string') {
+    const res = await setOrderStatus(db, id, b.status as OrderStatus);
+    if (res !== 'ok') return c.json({ error: res }, res === 'not_found' ? 404 : 400);
+  }
+  if (typeof b.paymentStatus === 'string') {
+    if (!['unpaid', 'paid', 'refunded'].includes(b.paymentStatus)) return c.json({ error: 'invalid' }, 400);
+    await setPaymentStatus(db, id, b.paymentStatus as PaymentStatus);
+  }
+  const o = await getOrder(db, id);
+  return o ? c.json({ ...o, next: allowedNext(o.order.status) }) : c.json({ error: 'not_found' }, 404);
+});
+
+/* -------------------------------------------------------------- settings --------------------------------------------------------------- */
+
+adminApi.get('/settings', async (c) =>
+  c.json({ zones: await getZones(c.env.DB), shopPhone: (await getSetting(c.env.DB, 'shop_phone')) ?? '', card: Boolean(gatewayFor(c.env)), categories: CATEGORIES }),
+);
+
+adminApi.put('/settings', async (c) => {
+  const b = (await c.req.json().catch(() => ({}))) as { zones?: unknown; shopPhone?: unknown };
+  const current = await getZones(c.env.DB);
+  const incoming = Array.isArray(b.zones) ? (b.zones as Record<string, unknown>[]) : [];
+  const zones = current.map((z) => {
+    const u = incoming.find((x) => x.id === z.id);
+    if (!u) return z;
+    const fee = u.fee === null || u.fee === '' ? null : Number(u.fee);
+    return {
+      id: z.id,
+      fee: fee === null || (Number.isInteger(fee) && fee >= 0 && fee <= 100_000) ? fee : z.fee,
+      enabled: typeof u.enabled === 'boolean' ? u.enabled : z.enabled,
+    };
+  });
+  if (!zones.some((z) => z.enabled)) return c.json({ error: 'one_zone_required' }, 400);
+  await setSetting(c.env.DB, 'delivery_zones', JSON.stringify(zones));
+  if (typeof b.shopPhone === 'string') await setSetting(c.env.DB, 'shop_phone', b.shopPhone.trim().slice(0, 30));
+  return c.json({ zones, shopPhone: (await getSetting(c.env.DB, 'shop_phone')) ?? '' });
+});

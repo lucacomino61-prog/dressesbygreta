@@ -1,10 +1,8 @@
 # Product
 
-> **2026-09-23: the try-on was removed at the client's request.** No camera, no MediaPipe, no fitting room, no door section. Dress tiles open the Instagram post; the hero button is "Shiko fustanet". Sections below that describe the try-on are history; the source is in git before this date (commit 36bb5be).
+Dresses by Greta: the webshop of the boutique @dressesbygreta in Tirana, Albania. Floor-length evening and prom gowns, cocktail and mini dresses. The boutique sells and rents; the website sells (sale only, decided by Luca on 2026-09-23) and sends renting to Instagram.
 
-Dresses by Greta: the website for the Instagram boutique @dressesbygreta in Tirana, Albania. Floor-length evening and prom gowns, cocktail and mini dresses, available to rent or to buy. The site turns the Instagram feed into a catalog and adds one thing Instagram cannot do: a private camera try-on where the visitor sees a dress on herself without any photo leaving her phone.
-
-Facts marked (verified) come from the public Instagram profile read on 2026-09-16. Facts marked (inferred) come from the client brief and were not confirmed by an interview; the interview could not run in this session.
+Facts marked (verified) come from the public Instagram profile read on 2026-09-16. Facts marked (inferred) come from the client brief and were not confirmed by an interview.
 
 ## Platform
 
@@ -12,59 +10,59 @@ web
 
 ## Stack
 
-Vite + vanilla TypeScript, static output. GSAP 3 (core + ScrollTrigger) is the only animation engine; native scroll, no smooth-scroll library, no second requestAnimationFrame loop. MediaPipe Tasks Vision (Pose Landmarker) runs the try-on entirely in the browser. Fonts self-hosted through @fontsource. No backend, no analytics, no cookies, no storage of visitor media.
+One Cloudflare Worker (Hono) renders every storefront page on the server, serves the JSON APIs and the product photographs (R2), and keeps the catalogue, stock and orders in D1. Vite builds the browser code (vanilla TypeScript) through the Cloudflare Vite plugin; in development the Worker runs locally in workerd with simulated D1 and R2. GSAP 3 (core, ScrollTrigger) is the only animation engine; native scroll. Same-origin links swap <main> through a small client router so a dress photograph can fly from the Lookbook into its product page. No accounts for shoppers, no analytics, no advertising cookies; the bag lives in localStorage on the device.
 
 ## Users
 
-- Young women in Tirana and across Albania shopping for a prom (mature), wedding-guest, birthday or TV appearance dress, mostly on a phone, arriving from the Instagram bio link (inferred from the feed hashtags: #promdresses, #weddingguest, #birthdaydress, #bigbrothervipalbania).
+- Young women in Tirana and across Albania shopping for a prom (mature), wedding-guest, birthday or TV appearance dress, mostly on a phone, arriving from the Instagram bio link (inferred from the feed hashtags).
 - Their mothers and friends, who co-decide and often pay (inferred).
-- Greta and her team, who post the dresses and answer DMs (verified: the account is run as a boutique with client reposts).
+- Greta and her team, who photograph the dresses, set prices and stock, and handle orders in the admin (verified that the account is run as a boutique; the admin is new).
 
 ## Product Purpose
 
-Let a visitor browse every dress at full size, decide "this could be mine", see it on herself in seconds, and reserve it by messaging the boutique on Instagram. Success is a DM or a visit to the shop, not an online payment.
+Let a visitor find a dress in her size, see it large, add it to the bag and order it with cash on delivery, in Albanian or English. Success is a placed order that the shop confirms by phone. Card payment is built as an adapter and stays off until a contract with an Albanian bank gateway exists.
 
 ## Positioning
 
-A Tirana boutique that rents and sells occasion dresses (verified: bio "For sale & rent!", highlights "For Sale & Rent", "Prom Dresses", "Miniprom", "Black Dresses", "Big Brother", "Clients", "Rregulla"). 26.2K followers (verified). Worn on television by Big Brother VIP Albania contestants (verified from captions naming Selin, Juela, Edisa, Nikol, Brikena). The website should feel like a step ahead of every other dress rental page in Albania: futuristic, calm, and exact (client brief).
+A Tirana boutique that rents and sells occasion dresses (verified: bio "For sale & rent!", highlights "For Sale & Rent", "Prom Dresses", "Miniprom", "Black Dresses", "Big Brother", "Clients", "Rregulla"). 26.2K followers (verified). Worn on television by Big Brother VIP Albania contestants (verified from captions). The website should feel like a step ahead of every other dress page in Albania: a lookbook with Awwwards-level motion, calm and exact (client brief).
 
 ## Operating Context
 
 - Shop at Rruga Andon Zako Cajupi, pas LSI, Tirane; Google Maps pin 41.320034, 19.812943 (verified).
-- Orders and reservations happen by Instagram message (verified from captions: "Reserve the dress and bag by sending us a message").
-- Prices, opening hours, rental duration, deposit and the rental rules ("Rregulla") are NOT known and must not be invented. Link to Instagram for them.
-- Visitors are on mobile Safari and Chrome, often on 4G, sometimes in the shop itself under warm ceiling light (inferred).
+- Prices (Lekë), stock per size, delivery fees per zone (Tirana, rest of Albania, Kosovo) and product descriptions are entered by Greta in the admin; none are invented in code. Opening hours, rental duration, deposit and the rental rules are not known and are linked to Instagram.
+- Sizes are European 34, 36, 38, 40, 42 shown with XS, S, M, L, XL (decided 2026-09-23).
+- Orders arrive in the admin; the shop calls the customer to confirm (process to be confirmed with Greta). Email alerts need a custom domain first.
+- Visitors are on mobile Safari and Chrome, often on 4G, sometimes in Instagram's in-app browser (inferred).
 
 ## Capabilities and Constraints
 
-- Catalog content is imported from the Instagram feed (images and captions) and stored as static files; a re-run of the harvest refreshes it.
-- Try-on: camera or an uploaded photo, pose detection on device, garment cutout overlay, freeze frame, manual adjust. Nothing is uploaded, stored, or sent; closing the room discards every frame.
-- No accounts, no cart, no checkout, no prices.
-- Copy in English; Albanian strings can be added later through one dictionary file (inferred need: the audience is Albanian).
+- Catalogue in D1: names and descriptions in Albanian and English, price and optional previous price, categories (gowns, mini, black, TV), colour, featured flag, Instagram link, draft or published. A dress is visible only when published, priced and photographed.
+- Photographs: the admin resizes in the browser (WebP, JPEG on iPhone Safari) to 480, 960 and 1600 px plus a 20 px stand-in; the Worker checks magic bytes and stores them in R2, served immutable.
+- Stock per size with a database check that it never goes negative: an order that would oversell fails whole. Cancelling an order returns its dresses to stock.
+- Checkout: name, phone, optional email, zone, city, address, notes; cash on delivery; card only when a gateway is configured (a simulated bank exists for local development). Prices are recomputed on the server; a client reference makes double submits idempotent; a honeypot and per-IP limits keep bots out.
+- Admin at /admin, one password stored only as a PBKDF2 hash (ADMIN_PASSWORD_HASH secret), HMAC-signed session cookie, SameSite=Strict plus an Origin check; a password-free sign-in exists only in local development.
 
 ## Brand Commitments
 
 - Name: "Dresses by Greta" (verified). Handle @dressesbygreta (verified).
-- Monogram: gold script "G" on an ivory disc (verified profile picture). The gold may inform a single accent; the site itself is not ivory or beige.
-- Client brief pins the world as futuristic (client, 2026-09-16).
-- Voice from captions: short, warm, confident, a single emoji; English with Albanian hashtags (verified). The site keeps the confidence and drops the emoji.
+- Monogram: gold script "G" on an ivory disc (verified profile picture). The site itself stays white.
+- The look is the client's pinned reference (vivetofficial.com, 2026-09-16): white, Helvetica, 12px uppercase chrome, square corners, photographs as the only colour. Evolved, not replaced, on 2026-09-23.
+- Voice from captions: short, warm, confident; the site keeps the confidence and drops the emoji.
 
 ## Evidence on Hand
 
-- 156 post links harvested from the profile grid (27 photo or carousel posts, 129 reels) with alt text and captions.
-- Full-resolution images (1080 px wide) and captions per post via the public embed pages.
-- Dress categories visible in the feed and highlights: prom, mini prom, black dresses, wedding guest, birthday, TV looks.
+- 39 dresses imported from the Instagram feed with their photographs; 7 featured.
+- No real prices, stock or delivery fees yet: Greta enters them. Local development uses invented demo values (tools/seed.py --demo) that must never reach the live shop.
 
 ## Product Principles
 
 - The dress leads; the interface recedes. Colour on the page comes from the dresses.
-- Every motion has a job: reveal a dress, confirm a tap, or move the visitor between the catalog and the try-on room.
-- Privacy is a feature, stated plainly and kept literally.
-- Never claim what the shop has not said: no prices, no availability, no rules.
+- Every motion has a job: reveal a dress, confirm a tap, or carry the visitor from one page to the next.
+- Never claim what the shop has not said: prices, stock, fees and rules come from Greta or stay unsaid.
+- Nothing is lost on a phone: every task works one-handed on a 390px screen.
 
 ## Accessibility & Inclusion
 
-- WCAG 2.2 AA contrast on a dark surface; focus rings themed, never removed.
-- All scroll and camera motion collapses under prefers-reduced-motion; the catalog still works with no JavaScript motion at all.
-- The try-on has a photo-upload path for devices without a camera and a full keyboard path for every control.
-- Albanian and English speakers; short sentences that translate cleanly.
+- WCAG 2.2 AA contrast on white; focus rings themed, never removed; real radio buttons for sizes and payment.
+- All motion collapses under prefers-reduced-motion; every page is server-rendered and works without JavaScript motion.
+- Albanian and English; short sentences that translate cleanly. Albanian strings still need a native speaker's sign-off.

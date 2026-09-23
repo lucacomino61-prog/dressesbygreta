@@ -1,39 +1,41 @@
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig } from 'vite';
+import { cloudflare } from '@cloudflare/vite-plugin';
 
 /**
- * Static site: everything is served from this origin; no CDN, no proxies, no backend.
- * Production only: a content security policy that keeps every request on this origin.
+ * One Vite project, two environments: the Worker (server rendering, APIs, photographs from R2) and
+ * the client (storefront and admin scripts and styles). In development the Worker runs in workerd
+ * with local D1 and R2 (.wrangler/state); nothing touches Cloudflare until a deploy.
+ *
+ * Entry files keep stable names (the Worker's HTML references them with ?v=<build id>); shared
+ * chunks and other assets are content-hashed and cached forever.
  */
-const csp: Plugin = {
-  name: 'greta-csp',
-  apply: 'build',
-  transformIndexHtml(html) {
-    const policy = [
-      "default-src 'self'",
-      "connect-src 'self'",
-      "img-src 'self' data: blob:",
-      "script-src 'self'",
-      "style-src 'self' 'unsafe-inline'",
-      "font-src 'self'",
-      "base-uri 'self'",
-      "form-action 'none'",
-    ].join('; ');
-    return html.replace('<meta charset="utf-8" />', `<meta charset="utf-8" />\n    <meta http-equiv="Content-Security-Policy" content="${policy}" />`);
-  },
-};
+const ENTRY_CSS = new Set(['styles.css', 'admin-styles.css']);
 
 export default defineConfig({
-  plugins: [csp],
+  plugins: [cloudflare()],
   server: { port: 3640, strictPort: true, host: '127.0.0.1' },
   preview: { port: 3641, strictPort: true },
-  build: {
-    target: 'es2022',
-    sourcemap: false,
-    rollupOptions: {
-      input: { main: 'index.html' },
-      output: {
-        manualChunks: {
-          gsap: ['gsap', 'gsap/ScrollTrigger'],
+  define: { __BUILD_ID__: JSON.stringify(Date.now().toString(36)) },
+  environments: {
+    client: {
+      build: {
+        target: 'es2022',
+        sourcemap: false,
+        rollupOptions: {
+          input: {
+            app: 'src/client/main.ts',
+            styles: 'src/client/styles/index.css',
+            admin: 'src/admin/main.ts',
+            'admin-styles': 'src/admin/admin.css',
+          },
+          output: {
+            entryFileNames: 'entry/[name].js',
+            chunkFileNames: 'assets/[name]-[hash].js',
+            assetFileNames: (a) => {
+              const name = a.names?.[0] ?? '';
+              return ENTRY_CSS.has(name) ? 'entry/[name][extname]' : 'assets/[name]-[hash][extname]';
+            },
+          },
         },
       },
     },
