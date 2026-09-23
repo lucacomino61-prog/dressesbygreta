@@ -1,5 +1,7 @@
 # DESIGN.md, Dresses by Greta
 
+> **2026-09-23: the try-on was removed at the client's request.** No camera, no MediaPipe, no fitting room, no door section. Dress tiles open the Instagram post; the hero button is "Shiko fustanet". Sections below that describe the try-on are history; the source is in git before this date (commit 36bb5be).
+
 World: the client pinned a reference on 2026-09-16 (vivetofficial.com, a Shopify Horizon store) and asked for its design to be followed, menu included. The site is therefore a white, Helvetica, 12px-uppercase fashion store: a transparent three-zone header, a home page whose hero is one full-bleed photograph with the wordmark pinned in the centre, drawers for menu, search and the list, a three-column footer and a follow card. Under that skin the site keeps what the reference does not have: a rail of featured gowns that print as you scroll, a filterable catalog of every dress from the Instagram feed, and the fitting room where the visitor puts a dress on herself with her camera, on device.
 
 Direction record: Impeccable seed 48f6c139 assigned the garment-rail candidate and the judge panel chose the printed-magazine world; both survive in the rail (sticky sleeves that open top-down) and in the scan-bar print grammar. The visual material (light ground, Helvetica, square black controls, 12px uppercase chrome) is the client's pinned reference and overrides the earlier dark world. Theme locked light everywhere; the fitting-room stage is the one dark surface because it shows a camera.

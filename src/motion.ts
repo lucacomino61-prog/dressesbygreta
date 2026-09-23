@@ -1,6 +1,6 @@
 /**
  * All choreographed and scroll-driven motion. GSAP is the only engine on the page and
- * gsap.ticker the only scheduler; the fitting room registers its frame loop with it.
+ * gsap.ticker the only scheduler.
  *
  * Every entrance starts from the visible default written in CSS (--p: 1, opacity 1). Hidden start
  * states are set only inside the no-preference branch, so a reduced-motion visitor or a failed
@@ -37,7 +37,6 @@ export async function initMotion(): Promise<void> {
     hero();
     rail();
     tiles();
-    door();
   });
 
   mm.add('(prefers-reduced-motion: reduce)', () => {
@@ -142,72 +141,7 @@ export function tiles(): void {
   ScrollTrigger.refresh();
 }
 
-function door(): void {
-  const el = document.querySelector('[data-door]');
-  if (!el) return;
-  gsap.fromTo(el, { '--p': 0 }, { '--p': 1, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 75%', once: true } });
-}
 
 export function refresh(): void {
   ScrollTrigger.refresh();
-}
-
-/** Open the fitting room like a curtain: the dialog clips open from the bottom edge. */
-export async function roomEnter(dialog: HTMLElement): Promise<void> {
-  if (reducedMotion()) {
-    await gsap.fromTo(dialog, { opacity: 0 }, { opacity: 1, duration: 0.15, ease: 'none' });
-    return;
-  }
-  await gsap.fromTo(
-    dialog,
-    { clipPath: 'inset(100% 0 0 0)' },
-    { clipPath: 'inset(0% 0 0 0)', duration: 0.48, ease: 'cubic-bezier(0.32, 0.72, 0, 1)' },
-  );
-}
-
-export async function roomExit(dialog: HTMLElement): Promise<void> {
-  if (reducedMotion()) {
-    await gsap.to(dialog, { opacity: 0, duration: 0.15, ease: 'none' });
-    return;
-  }
-  await gsap.to(dialog, { clipPath: 'inset(0 0 100% 0)', duration: 0.28, ease: 'power3.out' });
-}
-
-/** The crossing: a tapped dress lifts off the page and travels to the room's stage. */
-export async function crossing(from: HTMLImageElement, toRect: DOMRect): Promise<void> {
-  if (reducedMotion()) return;
-  const r = from.getBoundingClientRect();
-  const clone = from.cloneNode() as HTMLImageElement;
-  clone.removeAttribute('srcset');
-  clone.removeAttribute('sizes');
-  Object.assign(clone.style, {
-    position: 'fixed',
-    left: `${r.left}px`,
-    top: `${r.top}px`,
-    width: `${r.width}px`,
-    height: `${r.height}px`,
-    objectFit: 'cover',
-    zIndex: '30',
-    pointerEvents: 'none',
-    clipPath: 'inset(0)',
-    transform: 'none',
-    margin: '0',
-  } as Partial<CSSStyleDeclaration>);
-  // The dialog lives in the top layer; a later top-layer entry (a manual popover) stacks above it.
-  if ('showPopover' in clone) {
-    clone.setAttribute('popover', 'manual');
-    Object.assign(clone.style, { inset: 'auto', border: '0', padding: '0', background: 'transparent', overflow: 'visible' });
-  }
-  document.body.appendChild(clone);
-  if ('showPopover' in clone) (clone as HTMLElement & { showPopover(): void }).showPopover();
-  await gsap.to(clone, {
-    left: toRect.left,
-    top: toRect.top,
-    width: toRect.width,
-    height: toRect.height,
-    opacity: 0.2,
-    duration: 0.6,
-    ease: 'power2.inOut',
-  });
-  clone.remove();
 }

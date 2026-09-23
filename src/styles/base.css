@@ -32,7 +32,6 @@ body {
   overflow-x: clip;
 }
 
-html.room-open,
 html.drawer-open {
   overflow: hidden;
 }

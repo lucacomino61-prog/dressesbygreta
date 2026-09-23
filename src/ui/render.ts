@@ -1,8 +1,8 @@
 /**
  * DOM renderers for the data-driven parts of the page (header list, rail plates, contents grid,
- * filters, steps, footer list) and the string table. Everything is plain DOM; no framework.
+ * filters, footer list) and the string table. Everything is plain DOM; no framework.
  */
-import { dresses, featured, categories, tryOnDresses, byId, type Dress, type DressImage, type Category } from '../data/catalog';
+import { dresses, featured, categories, type Dress, type DressImage, type Category } from '../data/catalog';
 import { copy, type Lang } from '../copy';
 import { site } from '../data/site';
 import { bag } from './bag';
@@ -103,9 +103,7 @@ export function renderRail(el: HTMLElement): void {
     plate.className = 'plate rail__plate';
     plate.style.zIndex = String(i + 1);
     plate.dataset.id = d.id;
-    const primary = d.cutout
-      ? `<button class="tlink" type="button" data-tryon data-dress="${d.id}" data-t="hero.tryon">Provoje</button>`
-      : `<a class="tlink" href="${site.message}" target="_blank" rel="noopener" data-t="rent.cta">Pyet në Instagram</a>`;
+    const primary = `<a class="tlink" href="${site.message}" target="_blank" rel="noopener" data-t="rent.cta">Pyet në Instagram</a>`;
     plate.innerHTML = `
       <div class="rail__frame">
         <div class="plate__inner">
@@ -168,12 +166,8 @@ export function renderGrid(el: HTMLElement, f: Filter): HTMLElement[] {
     const img = d.images[0]!;
     const tile = document.createElement('div');
     tile.className = 'tile';
-    const media = d.cutout
-      ? `<button class="tile__media" type="button" data-tryon data-dress="${d.id}">`
-      : `<a class="tile__media" href="${d.permalink}" target="_blank" rel="noopener">`;
-    const mediaEnd = d.cutout ? '</button>' : '</a>';
     tile.innerHTML = `
-      ${media}
+      <a class="tile__media" href="${d.permalink}" target="_blank" rel="noopener">
         <span class="tile__well plate">
           <span class="plate__inner">
             <img class="plate__img" src="${img.sm}" srcset="${srcset(img)}" sizes="(min-width: 1024px) 22vw, (min-width: 768px) 30vw, 46vw"
@@ -181,11 +175,10 @@ export function renderGrid(el: HTMLElement, f: Filter): HTMLElement[] {
             <span class="plate__scan" aria-hidden="true"></span>
           </span>
         </span>
-      ${mediaEnd}
+      </a>
       <div class="tile__cap">
         <span class="tile__name" lang="en">${d.name}</span>
         <span class="tile__acts">
-          ${d.cutout ? `<button type="button" data-tryon data-dress="${d.id}" data-t="catalog.tryon">Provoje</button>` : ''}
           <button type="button" data-bag="${d.id}" aria-pressed="false" data-t="bag.add">Shto në çantë</button>
         </span>
       </div>`;
@@ -193,30 +186,4 @@ export function renderGrid(el: HTMLElement, f: Filter): HTMLElement[] {
     tiles.push(tile);
   }
   return tiles;
-}
-
-/* ------------------------------------ door + steps ---------------------------- */
-
-export function renderSteps(el: HTMLElement, lang: Lang): void {
-  el.innerHTML = copy[lang].tryonSection.steps.map((s) => `<li>${s}</li>`).join('');
-}
-
-/** The door shows a garment cutout when one exists; otherwise the cleanest mannequin photograph. */
-export function setDoorImage(img: HTMLImageElement): void {
-  const cut = tryOnDresses[0]?.cutout;
-  if (cut) {
-    img.src = cut.src;
-    img.width = cut.w;
-    img.height = cut.h;
-    img.alt = tryOnDresses[0]!.name;
-    return;
-  }
-  const fallback = byId('dlphhhgtwa') ?? dresses[0];
-  if (!fallback) return;
-  const im = fallback.images[0]!;
-  img.src = im.src;
-  img.srcset = srcset(im);
-  img.width = im.w;
-  img.height = im.h;
-  img.alt = fallback.name;
 }

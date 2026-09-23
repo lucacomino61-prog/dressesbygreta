@@ -1,4 +1,4 @@
-/* Hero, rail, contents, door, visit, footer. Mobile first. Light ground. */
+/* Hero, rail, contents, visit, footer. Mobile first. Light ground. */
 
 /* ---------- hero: one photograph, one overlay, the wordmark pinned in the centre ---------- */
 .hero {
@@ -233,82 +233,6 @@
   .grid {
     grid-template-columns: repeat(4, 1fr);
     gap: var(--s-7) var(--s-5);
-  }
-}
-
-/* ---------- door ---------- */
-.door {
-  padding-block: var(--section);
-  display: grid;
-  gap: var(--s-6);
-  border-top: 1px solid var(--hairline);
-}
-
-.door__cut {
-  width: min(64vw, 400px);
-  height: 64svh;
-  max-height: 620px;
-  --stage-h: 64svh;
-  justify-self: center;
-}
-
-.door__cut .plate__inner {
-  background: transparent;
-}
-
-.door__cut .plate__img {
-  object-fit: contain;
-  object-position: bottom center;
-  transform-origin: 50% 90%;
-}
-
-.door__text {
-  display: grid;
-  gap: var(--s-4);
-  justify-items: start;
-  text-align: left;
-}
-
-.steps {
-  display: grid;
-  gap: var(--s-1);
-  counter-reset: step;
-  color: var(--ink-2);
-  max-width: 60ch;
-  font-size: var(--fs-body);
-}
-
-.steps li {
-  counter-increment: step;
-  display: grid;
-  grid-template-columns: 2ch 1fr;
-  gap: var(--s-3);
-}
-
-.steps li::before {
-  content: counter(step, decimal-leading-zero);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--fs-ui);
-  line-height: 1.7;
-}
-
-@media (min-width: 1024px) {
-  .door {
-    grid-template-columns: repeat(12, 1fr);
-    column-gap: var(--s-5);
-    align-items: center;
-  }
-  .door__text {
-    grid-column: 2 / 6;
-    grid-row: 1;
-  }
-  .door__cut {
-    grid-column: 7 / 12;
-    grid-row: 1;
-    width: 100%;
-    height: 78svh;
-    --stage-h: 78svh;
-    max-height: 820px;
   }
 }
 

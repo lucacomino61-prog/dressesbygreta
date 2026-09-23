@@ -1,5 +1,7 @@
 # Product
 
+> **2026-09-23: the try-on was removed at the client's request.** No camera, no MediaPipe, no fitting room, no door section. Dress tiles open the Instagram post; the hero button is "Shiko fustanet". Sections below that describe the try-on are history; the source is in git before this date (commit 36bb5be).
+
 Dresses by Greta: the website for the Instagram boutique @dressesbygreta in Tirana, Albania. Floor-length evening and prom gowns, cocktail and mini dresses, available to rent or to buy. The site turns the Instagram feed into a catalog and adds one thing Instagram cannot do: a private camera try-on where the visitor sees a dress on herself without any photo leaving her phone.
 
 Facts marked (verified) come from the public Instagram profile read on 2026-09-16. Facts marked (inferred) come from the client brief and were not confirmed by an interview; the interview could not run in this session.

@@ -13,7 +13,6 @@ export type Filter = Category | 'all';
 
 export interface DrawerHost {
   setFilter(f: Filter): void;
-  openRoom(id?: string, from?: HTMLImageElement): void;
   setLang(l: Lang): void;
   lang(): Lang;
 }
@@ -114,9 +113,6 @@ export class Drawers {
           <div data-menu-cats></div>
         </div>
         <div class="menu__group">
-          <button class="menu__parent" type="button" data-tryon data-t="nav.tryon">Provoje</button>
-        </div>
-        <div class="menu__group">
           <a class="menu__parent" href="#visit" data-go data-t="nav.shop">Dyqani</a>
         </div>
         <div class="menu__group">
@@ -160,7 +156,6 @@ export class Drawers {
         this.host.setLang(l.dataset.setLang as Lang);
         return;
       }
-      if (t.closest('[data-tryon]')) void this.close(this.menu);
     });
   }
 
@@ -192,8 +187,6 @@ export class Drawers {
       const t = e.target as HTMLElement;
       const rm = t.closest<HTMLElement>('[data-remove]');
       if (rm) bag.remove(rm.dataset.remove!);
-      const tryon = t.closest<HTMLElement>('[data-tryon]');
-      if (tryon) void this.close(this.bagEl);
       if (t.closest('[data-continue]')) void this.close(this.bagEl);
     });
   }
@@ -230,7 +223,6 @@ export class Drawers {
           <div class="bag__meta">
             <span>${d.name}</span>
             <div class="bag__acts">
-              ${d.cutout ? `<button type="button" data-tryon data-dress="${d.id}">${this.t.nav.tryon}</button>` : ''}
               <a href="${d.permalink}" target="_blank" rel="noopener">${this.t.catalog.view}</a>
               <button type="button" data-remove="${d.id}">${t.remove}</button>
             </div>
@@ -264,11 +256,7 @@ export class Drawers {
         .map(
           (d) => `
           <div class="tile">
-            ${
-              d.cutout
-                ? `<button class="tile__media" type="button" data-tryon data-dress="${d.id}"><span class="tile__well"><img src="${d.images[0]!.sm}" alt="${d.name}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" /></span></button>`
-                : `<a class="tile__media" href="${d.permalink}" target="_blank" rel="noopener"><span class="tile__well"><img src="${d.images[0]!.sm}" alt="${d.name}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" /></span></a>`
-            }
+            <a class="tile__media" href="${d.permalink}" target="_blank" rel="noopener"><span class="tile__well"><img src="${d.images[0]!.sm}" alt="${d.name}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" /></span></a>
             <div class="tile__cap"><span class="tile__name">${d.name}</span></div>
           </div>`,
         )
@@ -283,9 +271,6 @@ export class Drawers {
       input.value = '';
       run();
       input.focus();
-    });
-    results.addEventListener('click', (e) => {
-      if ((e.target as Element).closest('[data-tryon]')) void this.close(this.search);
     });
     run();
   }
@@ -302,7 +287,7 @@ export class Drawers {
     }
     if (seen) return;
     setTimeout(() => {
-      if (document.querySelector('dialog[open]')) return; // never over the room or a drawer
+      if (document.querySelector('dialog[open]')) return; // never over a drawer
       const p = document.createElement('dialog');
       p.className = 'popup';
       p.innerHTML = `

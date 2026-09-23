@@ -3,7 +3,6 @@ import './styles/base.css';
 import './styles/components.css';
 import './styles/sections.css';
 import './styles/lqip.css';
-import './styles/room.css';
 
 import { detectLang, writeLang, type Lang } from './copy';
 import {
@@ -15,12 +14,9 @@ import {
   renderGrid,
   renderNavList,
   renderRail,
-  renderSteps,
-  setDoorImage,
   type Filter,
 } from './ui/render';
 import { initMotion, tiles as printTiles, refresh } from './motion';
-import { Room } from './tryon/room';
 import { Drawers } from './ui/drawers';
 import { bag } from './ui/bag';
 import { dresses } from './data/catalog';
@@ -34,8 +30,6 @@ const $ = <T extends Element>(sel: string): T => document.querySelector(sel) as 
 renderNavList($('[data-nav-list]'));
 renderFooterDresses($('[data-foot-dresses]'));
 renderRail($('[data-rail]'));
-renderSteps($('[data-steps]'), lang);
-setDoorImage($('[data-door-img]'));
 
 const grid = $<HTMLElement>('[data-grid]');
 const empty = $<HTMLElement>('[data-empty]');
@@ -61,17 +55,12 @@ renderGrid(grid, filter);
 applyCopy(lang);
 setCount(lang, dresses.length);
 
-/* ---- the fitting room and the drawers ---- */
-const room = new Room(document.body);
-room.setLang(lang);
-
+/* ---- the drawers ---- */
 function setLang(next: Lang): void {
   lang = next;
   writeLang(lang);
   applyCopy(lang);
   setCount(lang, grid.children.length);
-  renderSteps($('[data-steps]'), lang);
-  room.setLang(lang);
   drawers.setLang(lang);
   refresh();
 }
@@ -79,7 +68,6 @@ function setLang(next: Lang): void {
 const drawers = new Drawers(
   {
     setFilter,
-    openRoom: (id, from) => room.open(id, from),
     setLang,
     lang: () => lang,
   },
@@ -90,14 +78,6 @@ applyCopy(lang);
 
 document.addEventListener('click', (e) => {
   const target = e.target as Element;
-  const t = target.closest<HTMLElement>('[data-tryon]');
-  if (t) {
-    e.preventDefault();
-    drawers.closeAll();
-    const img = t.querySelector<HTMLImageElement>('img') ?? t.closest('.tile')?.querySelector<HTMLImageElement>('img') ?? undefined;
-    room.open(t.dataset.dress || undefined, img);
-    return;
-  }
   const b = target.closest<HTMLElement>('[data-bag]');
   if (b) {
     e.preventDefault();
@@ -117,20 +97,9 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Warm the pose runtime the moment a visitor shows intent, never on page load.
-document.addEventListener(
-  'pointerdown',
-  (e) => {
-    if ((e.target as Element).closest('[data-tryon]')) room.prefetch();
-  },
-  { passive: true },
-);
-
-/* ---- motion, then deep links, then the follow card ---- */
+/* ---- motion, then the follow card ---- */
 void initMotion().then(() => {
   printTiles();
-  const m = location.hash.match(/^#try\/([a-z0-9]+)$/);
-  if (m) room.open(m[1]);
-  else drawers.schedulePopup(7000);
+  drawers.schedulePopup(7000);
 });
 
