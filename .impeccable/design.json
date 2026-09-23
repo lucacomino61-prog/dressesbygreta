@@ -1,0 +1,509 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-23T14:58:51+00:00",
+  "title": "Design System: Dresses by Greta",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "ground-2": {
+        "role": "neutral",
+        "displayName": "Proof Grey",
+        "canonical": "#f4f4f4",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "ground-3": {
+        "role": "neutral",
+        "displayName": "Pressed Grey",
+        "canonical": "#ebebeb",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e6e6e6",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Field Slate",
+        "canonical": "#606a72",
+        "tonalRamp": [
+          "#1d2023",
+          "#33393e",
+          "#4a5258",
+          "#606a72",
+          "#7d868d",
+          "#9fa6ab",
+          "#c4c9cc",
+          "#e9ebec"
+        ]
+      },
+      "ink": {
+        "role": "primary",
+        "displayName": "Press Black",
+        "canonical": "#000000",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "ink-hover": {
+        "role": "primary",
+        "displayName": "Soft Press",
+        "canonical": "#222222",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 80",
+        "canonical": "rgba(0, 0, 0, 0.8)",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink 55",
+        "canonical": "rgba(0, 0, 0, 0.55)",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "overlay": {
+        "role": "neutral",
+        "displayName": "Photo Veil",
+        "canonical": "rgba(0, 0, 0, 0.15)",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "stage": {
+        "role": "neutral",
+        "displayName": "Stage",
+        "canonical": "#0b0b0b",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "on-photo": {
+        "role": "neutral",
+        "displayName": "On Photo",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#1f1f1f",
+          "#383838",
+          "#525252",
+          "#6e6e6e",
+          "#8c8c8c",
+          "#ababab",
+          "#cccccc",
+          "#ededed"
+        ]
+      },
+      "error": {
+        "role": "functional",
+        "displayName": "Signal Red",
+        "canonical": "#b3261e",
+        "tonalRamp": [
+          "#3d0c09",
+          "#5e1510",
+          "#841d17",
+          "#b3261e",
+          "#d4514a",
+          "#e5837e",
+          "#f1b5b2",
+          "#fbe6e5"
+        ]
+      },
+      "ok": {
+        "role": "functional",
+        "displayName": "Ledger Green (admin only)",
+        "canonical": "#1d6b3a",
+        "tonalRamp": [
+          "#0a2915",
+          "#12431f",
+          "#1d6b3a",
+          "#2c8a50",
+          "#50a871",
+          "#83c49b",
+          "#b8dfc5",
+          "#e6f4ea"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "wordmark-hero": {
+        "displayName": "Hero wordmark",
+        "purpose": "The one large word, centred on the hero photograph; clamp(2rem, 5.6vw, 5.5rem) on one line from 768px; carries the site's only shadow, a legibility lift."
+      },
+      "display-order": {
+        "displayName": "Order numeral",
+        "purpose": "Confirmation order number; the one display size allowed past the 6rem cap."
+      },
+      "numeral-page": {
+        "displayName": "Page numeral",
+        "purpose": "A one-photograph dress's page number under a 1px ink rule in the spread's side column."
+      },
+      "numeral-amount": {
+        "displayName": "Amount numeral",
+        "purpose": "The test bank page amount."
+      },
+      "numeral-index": {
+        "displayName": "Size numeral",
+        "purpose": "Desktop size index cells."
+      },
+      "price": {
+        "displayName": "Price",
+        "purpose": "Lek prices: 20px desktop spread (18px phone), 22px product page, 14px buy bar."
+      },
+      "title-product": {
+        "displayName": "Product title",
+        "purpose": "Product page name, uppercase."
+      },
+      "body-lg": {
+        "displayName": "Body large",
+        "purpose": "Empty states and leads, max 56ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and notes, max 60ch."
+      },
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "12px uppercase at 0.08em: page titles, spread names, legends."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "12px uppercase at 0.02em: all chrome."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Header and popup mark."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Size letters and stock counts."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hero-wordmark-lift",
+        "value": "text-shadow: 0 1px 28px rgba(0, 0, 0, 0.4)",
+        "purpose": "Legibility of the hero wordmark over bright fabric; the only shadow on the site."
+      },
+      {
+        "name": "radio-ring",
+        "value": "box-shadow: inset 0 0 0 3px #ffffff",
+        "purpose": "Draws the gap between frame and fill in square radio marks; not elevation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Press feedback and the accordion chevron."
+      },
+      {
+        "name": "ease-color",
+        "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+        "purpose": "Colour, border and opacity state changes."
+      },
+      {
+        "name": "d-press",
+        "value": "120ms",
+        "purpose": "Button press scale to 0.98."
+      },
+      {
+        "name": "d-hover",
+        "value": "160ms",
+        "purpose": "Hover and selection colour changes."
+      },
+      {
+        "name": "d-nav",
+        "value": "200ms",
+        "purpose": "Header transparent to solid."
+      },
+      {
+        "name": "print",
+        "value": "0.9s power3.out on --p; 1px scan bar travels 100cqh",
+        "purpose": "A photograph printing in under the scan bar once decoded (never waits over 2.5s)."
+      },
+      {
+        "name": "page-turn",
+        "value": "scrub, ease none; previous sheet to scale 0.94, opacity 0.45",
+        "purpose": "The next spread slides over; its plate prints over 0 to 50% of the travel, the second plate 20 to 70%, the page numeral rises 25 to 80%, the caption fades up from 40% to stuck."
+      },
+      {
+        "name": "flight",
+        "value": "0.75s expo.inOut, then a 0.18s hand-over",
+        "purpose": "A photograph clone flies from the spread or contents preview to the product page."
+      },
+      {
+        "name": "size-fold",
+        "value": "clip-path inset(0 0 100% 0), 0.42s power3.in, stagger 0.04s; staying captions to 0.35 in 0.3s",
+        "purpose": "Spreads without the tapped size close upward before the swap."
+      },
+      {
+        "name": "drop-into-bag",
+        "value": "0.6s power3.in to a 28px 3:4 clone; count 1.6 to 1 in 0.5s expo.out",
+        "purpose": "A dress added to the bag."
+      },
+      {
+        "name": "drawer",
+        "value": "in 0.42s power3.out, out 0.26s power3.in",
+        "purpose": "Menu from the left, bag from the right, search from the top."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "hidden start states only inside prefers-reduced-motion: no-preference",
+        "purpose": "Nothing slides, turns, flies, folds or drifts; CSS defaults are the finished page."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "admin",
+        "value": "900px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one black action per caption, product page, drawer foot and checkout.",
+      "html": "<button class=\"ds-btn\">Shto në çantë</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;border:1px solid var(--ink,#000);background:var(--ink,#000);color:var(--ground,#fff);border-radius:0;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);font-size:12px;letter-spacing:0.02em;text-transform:uppercase;line-height:1;cursor:pointer;transition:transform 120ms cubic-bezier(0.23,1,0.32,1),background-color 160ms cubic-bezier(0.25,0.1,0.25,1),border-color 160ms cubic-bezier(0.25,0.1,0.25,1);} .ds-btn:hover{background:#222;border-color:#222;} .ds-btn:active{transform:scale(0.98);} .ds-btn:focus-visible{outline:1px solid var(--ink,#000);outline-offset:3px;} .ds-btn:disabled{background:var(--ground-3,#ebebeb);border-color:var(--ground-3,#ebebeb);color:rgba(0,0,0,0.55);cursor:default;transform:none;}"
+    },
+    {
+      "name": "Line Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Secondary action with an ink frame; fills black on hover.",
+      "html": "<button class=\"ds-btn-line\">Hap në Google Maps</button>",
+      "css": ".ds-btn-line{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;border:1px solid var(--ink,#000);background:transparent;color:var(--ink,#000);border-radius:0;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);font-size:12px;letter-spacing:0.02em;text-transform:uppercase;line-height:1;cursor:pointer;transition:transform 120ms cubic-bezier(0.23,1,0.32,1),background-color 160ms cubic-bezier(0.25,0.1,0.25,1),color 160ms cubic-bezier(0.25,0.1,0.25,1);} .ds-btn-line:hover{background:var(--ink,#000);color:var(--ground,#fff);} .ds-btn-line:active{transform:scale(0.98);} .ds-btn-line:focus-visible{outline:1px solid var(--ink,#000);outline-offset:3px;}"
+    },
+    {
+      "name": "Size Toggles",
+      "kind": "chip",
+      "refersTo": "size-toggle",
+      "description": "Five square radio cells, EU numeral over letter; chosen fills black, sold out is struck by one diagonal hairline.",
+      "html": "<div class=\"ds-pick\"><label class=\"ds-size is-out\"><input type=\"radio\" name=\"ds-s\" disabled><span class=\"ds-n\">34</span><span class=\"ds-l\">XS</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"ds-s\"><span class=\"ds-n\">36</span><span class=\"ds-l\">S</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"ds-s\" checked><span class=\"ds-n\">38</span><span class=\"ds-l\">M</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"ds-s\"><span class=\"ds-n\">40</span><span class=\"ds-l\">L</span></label><label class=\"ds-size is-out\"><input type=\"radio\" name=\"ds-s\" disabled><span class=\"ds-n\">42</span><span class=\"ds-l\">XL</span></label></div>",
+      "css": ".ds-pick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:360px;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);} .ds-size{position:relative;display:grid;place-items:center;align-content:center;gap:2px;height:48px;border:1px solid var(--hairline,#e6e6e6);color:var(--ink,#000);cursor:pointer;overflow:hidden;transition:border-color 160ms,background-color 160ms,color 160ms;} .ds-size input{position:absolute;inset:0;margin:0;opacity:0;cursor:inherit;} .ds-n{font-size:13px;line-height:1;font-variant-numeric:tabular-nums;} .ds-l{font-size:10px;line-height:1;letter-spacing:0.04em;color:rgba(0,0,0,0.55);} .ds-size:not(.is-out):hover{border-color:var(--ink,#000);} .ds-size:has(input:checked){background:var(--ink,#000);border-color:var(--ink,#000);color:var(--ground,#fff);} .ds-size:has(input:checked) .ds-l{color:rgba(255,255,255,0.7);} .ds-size:has(input:focus-visible){outline:1px solid var(--ink,#000);outline-offset:3px;} .ds-size.is-out{color:rgba(0,0,0,0.55);cursor:default;} .ds-size.is-out::after{content:'';position:absolute;left:-20%;right:-20%;top:50%;height:1px;background:var(--hairline,#e6e6e6);transform:rotate(-24deg);}"
+    },
+    {
+      "name": "Text Control",
+      "kind": "nav",
+      "refersTo": "text-control",
+      "description": "Uppercase 12px link with a 44px hit area; hover and press drop to 60% opacity, the active state is a 1px underline.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-tlink is-on\" href=\"#\">Shop</a><a class=\"ds-tlink\" href=\"#\">Të gjata</a><a class=\"ds-tlink\" href=\"#\">Kërko</a><a class=\"ds-tlink\" href=\"#\">Çanta</a></nav>",
+      "css": ".ds-nav{display:flex;gap:4px;} .ds-tlink{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);font-size:12px;letter-spacing:0.02em;text-transform:uppercase;line-height:1;color:var(--ink,#000);text-decoration:none;transition:opacity 160ms cubic-bezier(0.25,0.1,0.25,1);} .ds-tlink:hover,.ds-tlink:active{opacity:0.6;} .ds-tlink.is-on{text-decoration:underline;text-underline-offset:0.35em;text-decoration-thickness:1px;} .ds-tlink:focus-visible{outline:1px solid var(--ink,#000);outline-offset:3px;}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field-input",
+      "description": "Checkout field: 12px uppercase label, 48px square input framed in field slate, ink on focus, red on error.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field__label\">Telefoni</span><input class=\"ds-input\" type=\"tel\" placeholder=\"06x xxx xxxx\"></label><label class=\"ds-field\"><span class=\"ds-field__label\">Adresa</span><input class=\"ds-input\" aria-invalid=\"true\"><span class=\"ds-field__error\">Shkruani adresën.</span></label>",
+      "css": ".ds-field{display:grid;gap:6px;width:320px;margin-bottom:16px;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);} .ds-field__label{font-size:12px;letter-spacing:0.02em;text-transform:uppercase;color:rgba(0,0,0,0.8);} .ds-input{height:48px;padding:0 14px;border:1px solid var(--line,#606a72);border-radius:0;background:var(--ground,#fff);color:var(--ink,#000);font:inherit;font-size:16px;appearance:none;transition:border-color 160ms;} .ds-input::placeholder{color:rgba(0,0,0,0.55);} .ds-input:focus-visible{outline:1px solid var(--ink,#000);outline-offset:0;border-color:var(--ink,#000);} .ds-input[aria-invalid]{border-color:var(--error,#b3261e);} .ds-field__error{font-size:12px;line-height:1.5;color:var(--error,#b3261e);}"
+    },
+    {
+      "name": "Choice",
+      "kind": "input",
+      "refersTo": "choice",
+      "description": "Full-width hairline row with a square radio mark that fills black; used for delivery zone and payment.",
+      "html": "<div class=\"ds-choices\"><label class=\"ds-choice\"><input type=\"radio\" name=\"ds-pay\" checked><span class=\"ds-choice__box\"><span>Para në dorëzim</span></span></label><label class=\"ds-choice\"><input type=\"radio\" name=\"ds-pay\"><span class=\"ds-choice__box\"><span>Tiranë</span></span></label></div>",
+      "css": ".ds-choices{display:grid;gap:8px;width:360px;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);} .ds-choice{position:relative;display:block;cursor:pointer;} .ds-choice input{position:absolute;inset:0;opacity:0;margin:0;cursor:inherit;} .ds-choice__box{position:relative;display:flex;justify-content:space-between;align-items:baseline;gap:4px 16px;min-height:52px;padding:15px 16px 14px 44px;border:1px solid var(--hairline,#e6e6e6);font-size:12px;letter-spacing:0.02em;text-transform:uppercase;transition:border-color 160ms;} .ds-choice__box::before{content:'';position:absolute;left:16px;top:17px;width:14px;height:14px;border:1px solid var(--ink,#000);background:var(--ground,#fff);box-shadow:inset 0 0 0 3px var(--ground,#fff);transition:background-color 160ms;} .ds-choice:hover .ds-choice__box,.ds-choice input:checked+.ds-choice__box{border-color:var(--ink,#000);} .ds-choice input:checked+.ds-choice__box::before{background:var(--ink,#000);} .ds-choice input:focus-visible+.ds-choice__box{outline:1px solid var(--ink,#000);outline-offset:3px;} .ds-choice__meta{color:rgba(0,0,0,0.8);font-variant-numeric:tabular-nums;}"
+    },
+    {
+      "name": "Size Index",
+      "kind": "custom",
+      "refersTo": "size-index",
+      "description": "The desktop page-edge column: 22px numerals with letter and count in hairline cells, the chosen size underlined, unavailable sizes struck, INDEKSI under an ink rule.",
+      "html": "<nav class=\"ds-si\"><a class=\"ds-si__c ds-si__w\" href=\"#\">Të gjitha</a><a class=\"ds-si__c\" href=\"#\"><span class=\"ds-si__n\">36</span><span class=\"ds-si__k\">22</span><span class=\"ds-si__l\">S</span></a><a class=\"ds-si__c is-on\" href=\"#\"><span class=\"ds-si__n\">38</span><span class=\"ds-si__k\">19</span><span class=\"ds-si__l\">M</span></a><span class=\"ds-si__c is-out\"><span class=\"ds-si__n\">40</span><span class=\"ds-si__k\">0</span><span class=\"ds-si__l\">L</span></span><a class=\"ds-si__c ds-si__w ds-si__v\" href=\"#\">Indeksi</a></nav>",
+      "css": ".ds-si{display:grid;width:132px;border-left:1px solid var(--hairline,#e6e6e6);padding-right:24px;font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);} .ds-si__c{display:grid;grid-template-columns:1fr auto;grid-template-areas:'n c' 'l c';align-items:end;padding:8px 0 8px 16px;border-bottom:1px solid var(--hairline,#e6e6e6);color:rgba(0,0,0,0.8);text-decoration:none;font-variant-numeric:tabular-nums;transition:color 160ms;} .ds-si__c:hover{color:var(--ink,#000);} .ds-si__n{grid-area:n;font-size:22px;line-height:1;letter-spacing:-0.01em;} .ds-si__k{grid-area:c;align-self:start;font-size:10px;color:rgba(0,0,0,0.55);} .ds-si__l{grid-area:l;font-size:10px;color:rgba(0,0,0,0.55);} .ds-si__w{display:block;font-size:12px;letter-spacing:0.02em;text-transform:uppercase;line-height:1.4;} .ds-si__c.is-on{color:var(--ink,#000);} .ds-si__c.is-on .ds-si__n{text-decoration:underline;text-underline-offset:0.3em;text-decoration-thickness:1px;} .ds-si__c.is-out{color:rgba(0,0,0,0.55);text-decoration:line-through;} .ds-si__v{border-bottom:0;border-top:1px solid var(--ink,#000);color:var(--ink,#000);} .ds-si__c:focus-visible{outline:1px solid var(--ink,#000);outline-offset:3px;}"
+    },
+    {
+      "name": "Contents Line",
+      "kind": "custom",
+      "refersTo": "toc-line",
+      "description": "One typeset line of the contents page: number, name, a hairline leader that turns ink on hover, sizes with sold-out sizes struck, price.",
+      "html": "<ol class=\"ds-toc\"><li><a class=\"ds-toc__a\" href=\"#\"><span class=\"ds-toc__n\">01</span><span class=\"ds-toc__name\">Sapphire sequin gown</span><span class=\"ds-toc__lead\"></span><span class=\"ds-toc__s\"><span>34</span><span>36</span><span>38</span><s>40</s><s>42</s></span><span class=\"ds-toc__p\">32 000 Lekë</span></a></li><li><a class=\"ds-toc__a\" href=\"#\"><span class=\"ds-toc__n\">02</span><span class=\"ds-toc__name\">Black satin midi</span><span class=\"ds-toc__lead\"></span><span class=\"ds-toc__s\"><s>34</s><span>36</span><span>38</span><span>40</span><s>42</s></span><span class=\"ds-toc__p\">18 500 Lekë</span></a></li></ol>",
+      "css": ".ds-toc{list-style:none;margin:0;padding:0;width:640px;border-top:1px solid var(--ink,#000);font-family:var(--font, 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif);} .ds-toc li{border-bottom:1px solid var(--hairline,#e6e6e6);} .ds-toc__a{display:grid;grid-template-columns:3ch minmax(0,max-content) minmax(24px,1fr) auto 12ch;align-items:baseline;column-gap:16px;padding:15px 0 14px;font-size:12px;letter-spacing:0.02em;text-transform:uppercase;font-variant-numeric:tabular-nums;color:var(--ink,#000);text-decoration:none;} .ds-toc__n{color:rgba(0,0,0,0.55);} .ds-toc__lead{align-self:center;height:1px;background:var(--hairline,#e6e6e6);transition:background-color 160ms;} .ds-toc__s{display:flex;gap:6px;color:rgba(0,0,0,0.8);} .ds-toc__s s{color:rgba(0,0,0,0.55);} .ds-toc__p{text-align:right;} .ds-toc__a:hover .ds-toc__lead{background:var(--ink,#000);} .ds-toc__a:hover .ds-toc__name,.ds-toc__a:focus-visible .ds-toc__name{text-decoration:underline;text-underline-offset:0.25em;text-decoration-thickness:1px;} .ds-toc__a:focus-visible{outline:1px solid var(--ink,#000);outline-offset:2px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lookbook",
+    "overview": "The shop is Greta's lookbook, printed in the client's pinned house style. The material is the reference she chose on 2026-09-16 (vivetofficial.com): a white page, black ink, one Helvetica stack with no webfont, 12px uppercase chrome at 0.02em, 14px body, square corners, filled black buttons, 1px hairlines, and photographs as the only colour. That material is fixed. What the 2026-09-23 system change added is the book structure on top of it: every dress is a spread, the spreads are turned page by page as she scrolls, the index view is the lookbook's contents page, and a column of size numerals runs down the page edge. The home page is the hero photograph followed directly by the Shop (named \"Shop\" in both languages); the camera try-on, the featured rail, the catalogue grid and the sizes band no longer exist.\n\nDensity is calm on the storefront and tight in the admin. The storefront gives one dress per viewport, lets the photograph take seven of eleven columns, and keeps everything else in 12px uppercase so the dress is the only loud thing on the screen. Hierarchy comes from size contrast inside one family (12px labels against 20px prices, 22px size numerals and 56 to 96px page numerals) rather than from weight, colour or a second typeface. The admin (Operate mode, Albanian) shares every token and trades the white page for a grey ground with white cards and dense rows.\n\nMotion carries the book metaphor and nothing else: the page turn, the print under a 1px scan bar, the photograph's flight from spread to product page, the size fold, the drop into the bag. GSAP is the only engine and `gsap.ticker` the only scheduler; there is no pin, no snap, no smooth-scroll library. Rejected, and confirmed by the brief: the square product grid with badges and a filter sidebar.",
+    "keyCharacteristics": [
+      "White ground, black ink, the dresses as the only colour.",
+      "One Helvetica stack, no webfont; 12px uppercase chrome, 14px body, large numerals as the only display type.",
+      "Square corners everywhere; 1px hairlines and 1px ink rules as the only structure.",
+      "One dress per spread: photograph in columns 1 to 7, second photograph or page numeral plus caption in columns 8 to 11.",
+      "Motion as page-turning: slide over, recede, print, fly."
+    ],
+    "rules": [
+      {
+        "name": "The Dresses-Only Rule",
+        "body": "No accent colour, no tinted surfaces, no coloured badges. If a pixel on the storefront has hue, it belongs to a photograph (or to an error).",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Line Rule",
+        "body": "Structure is drawn with exactly two lines: the 1px hairline that separates, and the 1px ink rule that opens a block (the page numeral, the contents list, the confirmation title, the checkout head, the INDEKSI cell, the order total).",
+        "section": "colors"
+      },
+      {
+        "name": "The One-Stack Rule",
+        "body": "One family, no webfont, no display serif. Hierarchy is size and tracking, never a second face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Six-Rem Cap",
+        "body": "Display numerals stop at 6rem (96px). Only the confirmation order number and the hero wordmark may exceed it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Folio-Below Rule",
+        "body": "Folios (\"01 / 39\") live in the foot row of a caption or product page, beside the SHIKO FUSTANIN or back link, never above a heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The One-Dress Rule",
+        "body": "On the Shop, one dress owns the viewport. No grid of product cards in spreads view.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flush Caption Rule",
+        "body": "On phones the caption spans the photograph's lower edge edge to edge; it never floats as an inset card.",
+        "section": "layout"
+      },
+      {
+        "name": "The Paper Rule",
+        "body": "Surfaces are paper: white, flat, separated by hairlines. Depth appears only while something moves.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep the page white, the ink black and the photographs the only colour.",
+      "**Do** set every piece of chrome in 12px uppercase at 0.02em (0.08em for headings) and body at 14px.",
+      "**Do** give each dress its own spread: photograph in columns 1 to 7, second photograph or page numeral under a 1px ink rule plus the caption in columns 8 to 11.",
+      "**Do** use one full-width black button per caption and per product page.",
+      "**Do** keep sold-out sizes visible and struck (diagonal hairline in toggles, line-through in lists).",
+      "**Do** put folios in foot rows and set every number in tabular figures.",
+      "**Do** span the phone caption flush across the photograph's lower edge.",
+      "**Do** cap display numerals at 6rem, except the confirmation order number and the hero wordmark.",
+      "**Do** use signal red (#b3261e) only for errors, and ledger green only in the admin.",
+      "**Do** keep every motion inside GSAP with a reduced-motion fallback where the finished page is the CSS default."
+    ],
+    "donts": [
+      "**Don't** add an accent colour, a tinted surface or a coloured badge.",
+      "**Don't** use gradients beyond the hero overlay and its header gradient.",
+      "**Don't** use box shadows, glass or backdrop blur; the hero wordmark's legibility lift is the only shadow.",
+      "**Don't** round a corner.",
+      "**Don't** add a second font or a display serif.",
+      "**Don't** put eyebrows or kickers above headings, or a folio above a heading.",
+      "**Don't** add section numbers or scroll cues to marketing sections.",
+      "**Don't** build a square product grid with badges and a filter sidebar.",
+      "**Don't** add dark sections; the hero's letterbox is the only dark field.",
+      "**Don't** use GSAP pin or snap, Lenis, a second frame loop or CSS keyframe loops.",
+      "**Don't** write em or en dashes in copy."
+    ]
+  }
+}
