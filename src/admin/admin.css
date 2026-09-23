@@ -7,6 +7,7 @@
   --ok: #1d6b3a;
 }
 
+html,
 body {
   background: var(--ground-2);
 }
