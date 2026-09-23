@@ -1,10 +1,11 @@
 // Sets the admin password without it ever appearing on screen or in a file:
 //   npm run admin:password            -> writes the hash into .dev.vars (local dev)
-//   npm run admin:password -- --print -> prints only the hash, for `npx wrangler secret put ADMIN_PASSWORD_HASH`
+//   node tools/admin-password.mjs --print | npx wrangler secret put ADMIN_PASSWORD_HASH
+//     (prompts go to stderr, only the hash reaches the pipe)
 // Format matches src/worker/auth.ts: pbkdf2_sha256$<iterations>$<salt b64>$<hash b64>.
 import { pbkdf2Sync, randomBytes } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { stdin, stdout } from 'node:process';
+import { stdin, stderr as stdout } from 'node:process';
 
 const ITERATIONS = 100000; // the Workers runtime caps PBKDF2 here
 

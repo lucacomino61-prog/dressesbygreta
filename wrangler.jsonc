@@ -7,13 +7,12 @@
     "binding": "ASSETS",
     "not_found_handling": "none"
   },
-  // Local development runs against simulated D1 and R2 (.wrangler/state).
-  // Before a first deploy: `wrangler d1 create greta`, paste the real id below, enable R2 in the dashboard.
+  // Local development runs against simulated D1 and R2 (.wrangler/state); deploys use the real ones.
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "greta",
-      "database_id": "00000000-0000-4000-8000-000000000000",
+      "database_id": "b77d9ae6-3e81-49b3-975f-1ba04059cc6b",
       "migrations_dir": "migrations"
     }
   ],
