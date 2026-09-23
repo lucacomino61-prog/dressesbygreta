@@ -30,6 +30,12 @@ export interface PageOptions {
 }
 
 const B = String.fromCharCode(92);
+
+/** Set from the settings table: the catalogue holds invented demo prices (local testing only). */
+let demoData = false;
+export const setDemo = (on: boolean): void => {
+  demoData = on;
+};
 const ldJson = (o: object): string => JSON.stringify(o).replace(/</g, `${B}u003c`);
 
 function assets(kind: 'store' | 'admin'): Raw {
@@ -144,6 +150,7 @@ export function page(o: PageOptions): string {
     <main id="main" tabindex="-1" data-page="${o.kind}" data-nav-mode="${o.overPhoto ? 'photo' : 'solid'}" data-page-json="${o.data ? JSON.stringify(o.data) : ''}">
       ${o.body}
     </main>
+    ${demoData ? html`<p class="demo-note" role="note">${t.demo}</p>` : ''}
     ${footer(o.lang, o)}
   </body>
 </html>`.value

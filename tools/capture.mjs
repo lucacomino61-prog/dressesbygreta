@@ -57,9 +57,9 @@ for (const v of views) {
   if (want('home')) {
     await open('/');
     await shot('home');
-    await page.evaluate(() => document.querySelector('.sizes-band')?.scrollIntoView());
-    await sleep(1500);
-    await shot('home-sizes');
+    await page.evaluate(() => window.scrollTo(0, document.getElementById('shop').getBoundingClientRect().top + window.scrollY));
+    await sleep(1800);
+    await shot('home-shop');
   }
   if (want('shop')) {
     await open('/dyqani');
@@ -80,6 +80,11 @@ for (const v of views) {
   if (want('product') && slug) {
     await open(`/fustan/${slug}`);
     await shot('product');
+    await page.click('[data-zoom]');
+    await sleep(900);
+    await shot('viewer');
+    await page.keyboard.press('Escape');
+    await sleep(400);
     // add to bag through the real form
     await page.evaluate(() => {
       const r = document.querySelector('.product__form input[type="radio"]:not(:disabled)');
@@ -101,6 +106,12 @@ for (const v of views) {
     await page.evaluate(() => document.querySelector('[data-co-form]').requestSubmit());
     await sleep(3200);
     await shot('confirmation');
+    // Put the stock back so every capture shows one data state (cancelling restocks the order).
+    await page.evaluate(async () => {
+      const id = location.pathname.split('/').pop();
+      await fetch('/api/admin/dev-login', { method: 'POST' });
+      await fetch(`/api/admin/orders/${id}`, { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ status: 'cancelled' }) });
+    });
   }
   if (want('admin')) {
     await page.goto(BASE + '/admin', { waitUntil: 'networkidle0' });

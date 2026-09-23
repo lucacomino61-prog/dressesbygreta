@@ -331,11 +331,39 @@ body {
   cursor: pointer;
 }
 
-.adm-check input,
-.adm-radio input {
+.adm-check input {
   width: 18px;
   height: 18px;
   accent-color: var(--ink);
+}
+
+/* the storefront's square radio mark */
+.adm-radio input {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--ink);
+  background: var(--ground);
+  box-shadow: inset 0 0 0 3px var(--ground);
+  cursor: pointer;
+}
+
+.adm-radio input:checked {
+  background: var(--ink);
+}
+
+.adm-radio input:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.adm-demo {
+  padding: 10px var(--gutter);
+  background: var(--ink);
+  color: var(--ground);
+  font-size: var(--fs-ui);
+  line-height: 1.5;
 }
 
 .adm-checks,

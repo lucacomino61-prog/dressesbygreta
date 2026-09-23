@@ -38,6 +38,8 @@ const icon = {
   right: raw('<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="m5 2 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>'),
   up: raw('<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 9l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>'),
   down: raw('<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="m2 5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>'),
+  minus: raw('<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10" stroke="currentColor" stroke-width="1.2"/></svg>'),
+  plus: raw('<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10M6 1v10" stroke="currentColor" stroke-width="1.2"/></svg>'),
   grip: raw('<svg width="10" height="16" viewBox="0 0 10 16" aria-hidden="true"><g fill="currentColor"><circle cx="2" cy="3" r="1.2"/><circle cx="8" cy="3" r="1.2"/><circle cx="2" cy="8" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="2" cy="13" r="1.2"/><circle cx="8" cy="13" r="1.2"/></g></svg>'),
 };
 
@@ -97,6 +99,7 @@ function frame(active: 'products' | 'orders' | 'settings', body: Raw, badge = 0)
         <button class="adm-link" type="button" data-logout>Dil</button>
       </div>
     </header>
+    ${demo ? html`<p class="adm-demo" role="note">Të dhëna demo në këtë kompjuter: çmimet dhe gjendja janë shembuj, jo të dyqanit. Në dyqanin e vërtetë fillon nga zero.</p>` : ''}
     <main class="adm-main" id="adm-main" tabindex="-1">${body}</main>`;
 }
 
@@ -129,10 +132,12 @@ document.addEventListener('click', (e) => {
 window.addEventListener('popstate', () => void route());
 
 let newOrders = 0;
+let demo = false;
 async function refreshBadge(): Promise<void> {
   try {
     const s = await api.summary();
     newOrders = s.newOrders;
+    demo = s.demo;
   } catch {
     /* keep */
   }
@@ -477,9 +482,9 @@ async function editor(id: string): Promise<void> {
                 (s) => html`<label class="adm-size">
                   <span class="adm-size__n">${s} <small>${SIZE_LETTER[s]}</small></span>
                   <span class="adm-stepper">
-                    <button type="button" class="adm-icon" data-step="-1" data-size="${s}" aria-label="Një më pak në masën ${s}">&minus;</button>
+                    <button type="button" class="adm-icon" data-step="-1" data-size="${s}" aria-label="Një më pak në masën ${s}">${icon.minus}</button>
                     <input class="adm-input" name="stock-${s}" inputmode="numeric" value="${d.stock[s]}" aria-label="Copë në masën ${s}" />
-                    <button type="button" class="adm-icon" data-step="1" data-size="${s}" aria-label="Një më shumë në masën ${s}">+</button>
+                    <button type="button" class="adm-icon" data-step="1" data-size="${s}" aria-label="Një më shumë në masën ${s}">${icon.plus}</button>
                   </span>
                 </label>`,
               )}

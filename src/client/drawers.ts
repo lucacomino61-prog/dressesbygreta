@@ -11,6 +11,8 @@ import { gsap, reducedMotion } from './motion';
 const SIDE = { menu: 'left', bag: 'right', search: 'top' } as const;
 type Kind = keyof typeof SIDE;
 const INSTAGRAM = 'https://www.instagram.com/dressesbygreta/';
+const MINUS = raw('<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10" stroke="currentColor" stroke-width="1.2"/></svg>');
+const PLUS = raw('<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10M6 1v10" stroke="currentColor" stroke-width="1.2"/></svg>');
 
 export class Drawers {
   private d: Record<Kind, HTMLDialogElement>;
@@ -174,9 +176,9 @@ export class Drawers {
           ${x.gone
             ? html`<span class="bag__warn">${t.bag.unavailable}</span>`
             : html`<span class="qty" role="group" aria-label="${t.bag.qty}">
-                <button type="button" data-qty="-1" data-id="${x.id}" data-size="${x.size}" aria-label="${t.a11y.qtyDown}"${x.qty <= 1 ? ' disabled' : ''}>&minus;</button>
+                <button type="button" data-qty="-1" data-id="${x.id}" data-size="${x.size}" aria-label="${t.a11y.qtyDown}"${x.qty <= 1 ? ' disabled' : ''}>${MINUS}</button>
                 <span class="qty__n" aria-live="polite">${x.qty}</span>
-                <button type="button" data-qty="1" data-id="${x.id}" data-size="${x.size}" aria-label="${t.a11y.qtyUp}"${x.qty >= cap ? ' disabled' : ''}>+</button>
+                <button type="button" data-qty="1" data-id="${x.id}" data-size="${x.size}" aria-label="${t.a11y.qtyUp}"${x.qty >= cap ? ' disabled' : ''}>${PLUS}</button>
               </span>
               ${x.qty >= cap && cap <= 2 ? html`<span class="bag__note">${t.bag.onlyLeft(cap)}</span>` : ''}`}
           <button class="bag__remove" type="button" data-remove data-id="${x.id}" data-size="${x.size}">${t.bag.remove}</button>

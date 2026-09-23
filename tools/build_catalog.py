@@ -14,7 +14,7 @@ from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / 'raw'
-OUT = ROOT / 'public' / 'dresses'
+OUT = ROOT / 'raw' / 'instagram' / 'dresses'
 (OUT / 'sm').mkdir(parents=True, exist_ok=True)
 (OUT / 'cut').mkdir(parents=True, exist_ok=True)
 

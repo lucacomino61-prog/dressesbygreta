@@ -4,7 +4,7 @@ import { copy, href, type Lang } from '../shared/copy';
 import { esc } from '../shared/html';
 import { bag, type Snap } from './bag';
 import type { Drawers } from './drawers';
-import { dropIntoBag, gsap, pageMotion, reducedMotion } from './motion';
+import { dropIntoBag, gsap, pageMotion, printPlate, reducedMotion } from './motion';
 import { navigate, type PageInit } from './router';
 
 interface ProductData extends Snap {
@@ -17,13 +17,133 @@ export function initPage(lang: Lang, drawers: Drawers): PageInit {
     pageMotion(main, { arrivedByFlight });
     main.querySelectorAll<HTMLFormElement>('form[data-add]').forEach((f) => addForm(f, lang));
     const kind = main.dataset.page;
-    if (kind === 'product') offs.push(productPage(main, lang));
+    markNav();
+    if (kind === 'home' || kind === 'shop') offs.push(indexPreview(main));
+    if (kind === 'product') offs.push(productPage(main, lang), viewer(main, lang));
     if (kind === 'checkout') offs.push(checkoutPage(main, lang));
     if (kind === 'confirmation') confirmationPage(main);
     if (kind === 'pay') payPage(main);
     drawers.syncLanguageLinks();
     return () => offs.forEach((off) => off());
   };
+}
+
+/* ------------------------------------------------------------ header + index ------------------------------------------------------------- */
+
+/** The header's category links say which one is open (the header survives page swaps). */
+function markNav(): void {
+  const here = new URL(location.href);
+  document.querySelectorAll<HTMLAnchorElement>('.nav__list a').forEach((a) => {
+    const u = new URL(a.href);
+    const on = u.pathname === here.pathname && (u.searchParams.get('kategoria') ?? '') === (here.searchParams.get('kategoria') ?? '');
+    if (on) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
+}
+
+/** Desktop index: one preview plate beside the typeset list prints the line under the pointer. */
+function indexPreview(main: HTMLElement): () => void {
+  const box = main.querySelector<HTMLElement>('.toc-preview');
+  const plate = box?.querySelector<HTMLElement>('.toc-preview__plate');
+  const img = plate?.querySelector<HTMLImageElement>('img');
+  const name = box?.querySelector<HTMLElement>('[data-preview-name]');
+  if (!box || !plate || !img) return () => undefined;
+  let current = plate.dataset.flipId ?? '';
+  const show = (e: Event) => {
+    const a = (e.target as Element).closest<HTMLAnchorElement>('.toc__link');
+    if (!a || !a.dataset.flip || a.dataset.flip === current || box.offsetParent === null) return;
+    current = a.dataset.flip;
+    plate.dataset.flipId = current;
+    img.srcset = a.dataset.srcset ?? '';
+    img.src = a.dataset.src ?? '';
+    img.style.backgroundImage = a.dataset.lqip ? `url(${a.dataset.lqip})` : '';
+    if (name) name.textContent = a.dataset.name ?? '';
+    main.querySelectorAll('.toc__link.is-on').forEach((x) => x.classList.remove('is-on'));
+    a.classList.add('is-on');
+    if (!reducedMotion()) printPlate(plate, 0, 0.55);
+  };
+  main.addEventListener('pointerover', show);
+  main.addEventListener('focusin', show);
+  return () => {
+    main.removeEventListener('pointerover', show);
+    main.removeEventListener('focusin', show);
+  };
+}
+
+/* ------------------------------------------------------------- photo viewer ------------------------------------------------------------- */
+
+const ICON = {
+  close: '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>',
+  prev: '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 2 4 8l6 6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>',
+  next: '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 2 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>',
+};
+
+/** Tapping a product photograph opens every photograph whole, one screen each. */
+function viewer(main: HTMLElement, lang: Lang): () => void {
+  const t = copy[lang];
+  const buttons = [...main.querySelectorAll<HTMLButtonElement>('[data-zoom]')];
+  const imgs = buttons.map((b) => b.querySelector<HTMLImageElement>('img')).filter((x): x is HTMLImageElement => !!x);
+  if (!imgs.length) return () => undefined;
+
+  const open = (start: number, opener: HTMLElement) => {
+    const d = document.createElement('dialog');
+    d.className = 'viewer';
+    d.setAttribute('aria-label', t.a11y.gallery);
+    const many = imgs.length > 1;
+    d.innerHTML = `<div class="viewer__track" data-track>${imgs
+      .map((im) => `<figure class="viewer__slide"><img src="${esc(im.currentSrc || im.src)}" srcset="${esc(im.srcset)}" sizes="100vw" alt="${esc(im.alt)}" decoding="async" /></figure>`)
+      .join('')}</div>
+      <p class="viewer__count" data-count aria-live="polite"></p>
+      <button class="viewer__btn viewer__close" type="button" data-close aria-label="${esc(t.a11y.close)}">${ICON.close}</button>
+      ${many ? `<button class="viewer__btn viewer__prev" type="button" data-step="-1" aria-label="${esc(t.a11y.prev)}">${ICON.prev}</button><button class="viewer__btn viewer__next" type="button" data-step="1" aria-label="${esc(t.a11y.next)}">${ICON.next}</button>` : ''}`;
+    document.body.appendChild(d);
+    const track = d.querySelector<HTMLElement>('[data-track]')!;
+    const count = d.querySelector<HTMLElement>('[data-count]')!;
+    let index = start;
+    const say = () => (count.textContent = many ? t.a11y.photoOf(index + 1, imgs.length) : '');
+    const goTo = (i: number, smooth = true) => {
+      index = (i + imgs.length) % imgs.length;
+      track.scrollTo({ left: index * track.clientWidth, behavior: smooth && !reducedMotion() ? 'smooth' : 'auto' });
+      say();
+    };
+    const close = () => {
+      d.close();
+      d.remove();
+      opener.focus({ preventScroll: true });
+    };
+    d.addEventListener('click', (e) => {
+      const el = e.target as Element;
+      if (el.closest('[data-close]')) return close();
+      const step = el.closest<HTMLElement>('[data-step]');
+      if (step) goTo(index + Number(step.dataset.step));
+    });
+    d.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') goTo(index + 1);
+      if (e.key === 'ArrowLeft') goTo(index - 1);
+    });
+    d.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      close();
+    });
+    track.addEventListener('scroll', () => {
+      const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      if (i !== index) {
+        index = i;
+        say();
+      }
+    });
+    d.showModal();
+    goTo(start, false);
+    d.querySelector<HTMLElement>('[data-close]')?.focus();
+    if (!reducedMotion()) gsap.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' });
+  };
+
+  const onClick = (e: Event) => {
+    const b = (e.target as Element).closest<HTMLButtonElement>('[data-zoom]');
+    if (b) open(Number(b.dataset.zoom ?? 0), b);
+  };
+  main.addEventListener('click', onClick);
+  return () => main.removeEventListener('click', onClick);
 }
 
 /* --------------------------------------------------------------- add to bag --------------------------------------------------------------- */

@@ -3,7 +3,7 @@
  * page and swap <main>. When the link belongs to a dress whose photograph is on screen, that
  * photograph flies to its place on the next page. Anything unusual falls back to a normal load.
  */
-import { gsap, land, reducedMotion, takeOff, type Flight } from './motion';
+import { foldAway, gsap, land, reducedMotion, takeOff, type Flight } from './motion';
 
 export type PageInit = (main: HTMLElement, arrivedByFlight: boolean) => void | (() => void);
 
@@ -47,9 +47,13 @@ export function startRouter(init: PageInit): void {
     const url = eligible(a, e);
     if (!url) return;
     e.preventDefault();
-    const card = a.closest('.spread, .toc__item, .rail__plate, .next-dress');
-    const plate = card?.querySelector<HTMLElement>('[data-flip-id]') ?? null;
-    void go(url, { push: true, plate });
+    // The flight leaves from whichever copy of the dress's photograph is on screen (on desktop the
+    // index shows one preview plate for all its lines).
+    const card = a.closest('.spread, .toc__item, .next-dress');
+    const id = card?.querySelector<HTMLElement>('[data-flip-id]')?.dataset.flipId;
+    const plate = id ? ([...document.querySelectorAll<HTMLElement>(`[data-flip-id="${CSS.escape(id)}"]`)].find((el) => el.getBoundingClientRect().width > 2) ?? null) : null;
+    const fold = a.closest('.size-index, .size-strip') ? a.dataset.size : undefined;
+    void go(url, { push: true, plate, fold });
   });
 
   // Warm the next page the moment a pointer settles on a link.
@@ -66,7 +70,7 @@ export function startRouter(init: PageInit): void {
     void go(new URL(location.href), { push: false, scroll: state?.scroll ?? 0 });
   });
 
-  async function go(url: URL, o: { push: boolean; plate?: HTMLElement | null; scroll?: number }): Promise<void> {
+  async function go(url: URL, o: { push: boolean; plate?: HTMLElement | null; scroll?: number; fold?: string }): Promise<void> {
     if (busy) return;
     busy = true;
     const docP = fetchDoc(url.href);
@@ -75,9 +79,12 @@ export function startRouter(init: PageInit): void {
     const flight: Flight | null = o.plate ? takeOff(o.plate) : null;
 
     try {
-      const out = reducedMotion()
-        ? gsap.to(current, { opacity: 0, duration: 0.12, ease: 'none' })
-        : gsap.to(current, { opacity: 0, y: flight ? 0 : -10, duration: flight ? 0.3 : 0.22, ease: 'power2.in' });
+      const folding = Boolean(o.fold && current.querySelector('.spread'));
+      const out = folding
+        ? foldAway(current, o.fold!)
+        : reducedMotion()
+          ? gsap.to(current, { opacity: 0, duration: 0.12, ease: 'none' })
+          : gsap.to(current, { opacity: 0, y: flight ? 0 : -10, duration: flight ? 0.3 : 0.22, ease: 'power2.in' });
       const [doc] = await Promise.all([docP, out]);
       const next = doc.querySelector<HTMLElement>('main');
       if (!next) throw new Error('no main');
@@ -106,7 +113,7 @@ export function startRouter(init: PageInit): void {
       if (flight) {
         gsap.fromTo(fresh, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: 'power2.out', delay: 0.2 });
         await land(flight, fresh);
-      } else {
+      } else if (!folding) {
         gsap.fromTo(fresh, { opacity: 0, y: reducedMotion() ? 0 : 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'expo.out', clearProps: 'transform' });
       }
       fresh.focus({ preventScroll: true });

@@ -3,22 +3,27 @@ import { Hono, type Context } from 'hono';
 import { isCategory, isSize, photoAt, type Size } from '../../shared/catalog';
 import { copy, isLang } from '../../shared/copy';
 import { html } from '../../shared/html';
-import { getVisibleBySlug, getZones, listVisible } from '../db';
+import { getSetting, getVisibleBySlug, getZones, listVisible } from '../db';
 import { getOrder } from '../orders';
 import { gatewayFor } from '../payments';
 import { SITE } from '../site';
 import type { AppEnv } from '../types';
 import { checkoutView, confirmationView, notFoundView, payTestView } from '../views/checkout';
 import { homeView, storeJsonLd } from '../views/home';
-import { assetTags, page } from '../views/layout';
+import { assetTags, page, setDemo } from '../views/layout';
 import { productJsonLd, productView } from '../views/product';
 import { shopView, type ShopState } from '../views/shop';
 
 export const pages = new Hono<AppEnv>();
 
+let demoChecked = 0;
 pages.use('*', async (c, next) => {
   const q = c.req.query('lang');
   c.set('lang', isLang(q) ? q : 'sq');
+  if (Date.now() - demoChecked > 60_000) {
+    demoChecked = Date.now();
+    setDemo((await getSetting(c.env.DB, 'demo_data')) === '1');
+  }
   await next();
 });
 

@@ -1,5 +1,5 @@
 """
-Import the Instagram catalogue (src/data/catalog.json + public/dresses/*.jpg) into the shop through
+Import the Instagram catalogue (src/data/catalog.json + raw/instagram/dresses/*.jpg) into the shop through
 the admin API of a running dev server, exactly as the admin page would: every photograph is resized
 to WebP widths plus a tiny blurred stand-in, then uploaded.
 
@@ -18,7 +18,9 @@ import base64
 import hashlib
 import io
 import json
+import subprocess
 import sys
+import urllib.parse
 import urllib.request
 import uuid
 from http.cookiejar import CookieJar
@@ -99,6 +101,12 @@ def main() -> None:
     ap.add_argument("--demo", action="store_true", help="invent prices and stock and publish (local testing only)")
     args = ap.parse_args()
 
+    # Local only, always: the dev login does not exist on a deployed Worker, and invented numbers
+    # must never reach the live shop.
+    host = urllib.parse.urlparse(args.base).hostname
+    if host not in ("127.0.0.1", "localhost"):
+        raise SystemExit(f"refusing to seed {args.base}: tools/seed.py only talks to a local dev server")
+
     api = Api(args.base)
     api.json("POST", "/api/admin/dev-login")
     existing = {p["instagramUrl"] for p in api.json("GET", "/api/admin/products")}
@@ -114,7 +122,7 @@ def main() -> None:
             continue
         p = api.json("POST", "/api/admin/products", {"nameSq": item["name"]})
         for img in item["images"]:
-            meta, files = variants(ROOT / "public" / img["src"])
+            meta, files = variants(ROOT / "raw" / "instagram" / img["src"])
             body, ctype = multipart(meta, files)
             api.call("POST", f"/api/admin/products/{p['id']}/photos", body, ctype)
         update = {
@@ -131,7 +139,17 @@ def main() -> None:
         api.json("PUT", f"/api/admin/products/{p['id']}", update)
         made += 1
         print(f"{made:>2}  {item['name']}  ({len(item['images'])} photo{'s' if len(item['images']) > 1 else ''})")
-    print(f"done: {made} imported, {len(existing)} already there")
+    if args.demo:
+        # Mark the local database itself, so every page and the admin say the numbers are examples.
+        subprocess.run(
+            'npx wrangler d1 execute greta --local --command '
+            '"INSERT INTO settings (key, value) VALUES (\'demo_data\', \'1\') ON CONFLICT (key) DO UPDATE SET value = \'1\'"',
+            shell=True,
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+        )
+    print(f"done: {made} imported, {len(existing)} already there{' (demo data flagged)' if args.demo else ''}")
 
 
 if __name__ == "__main__":

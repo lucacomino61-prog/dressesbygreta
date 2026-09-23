@@ -167,21 +167,11 @@
   font-variant-numeric: tabular-nums;
 }
 
-.lb-cats {
-  display: flex;
-  gap: var(--s-4);
-  overflow-x: auto;
-  scrollbar-width: none;
-  max-width: 100%;
-}
-
-.lb-cats::-webkit-scrollbar {
-  display: none;
-}
-
-.lb-cats .chip {
-  display: inline-flex;
-  align-items: center;
+/* Phones and tablets: the size strip is the only bar; categories live in the menu. */
+@media (max-width: 1023px) {
+  .lb-head {
+    display: none;
+  }
 }
 
 /* The size index: a sticky strip under the header on phones, a column of numerals on desktop. */
@@ -255,9 +245,25 @@
   color: var(--ink);
 }
 
-.size-strip .si__c,
 .size-strip .si__l {
   display: none;
+}
+
+.size-strip .si__c {
+  align-self: flex-start;
+  margin-top: 12px;
+}
+
+.si--cat {
+  gap: 6px;
+  align-items: center;
+  color: var(--ink);
+  border-right: 1px solid var(--hairline);
+  margin-right: var(--s-1);
+}
+
+.si--cat svg {
+  flex: none;
 }
 
 .size-index {
@@ -390,6 +396,11 @@
   color: var(--ink-3);
 }
 
+/* A dress with one photograph: its page number owns the upper side column instead. */
+.spread__page-no {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .spread__page {
     display: grid;
@@ -416,6 +427,27 @@
     display: block;
     min-height: 0;
     height: 100%;
+  }
+  .spread__page-no {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    min-height: 0;
+    overflow: hidden;
+    border-top: 1px solid var(--ink);
+    padding-top: var(--s-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .spread__page-n {
+    display: block;
+    font-size: clamp(56px, 6.4vw, 96px);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+  }
+  .spread__page-of {
+    font-size: var(--fs-ui);
+    letter-spacing: var(--track-ui);
+    color: var(--ink-3);
   }
   .spread__cap {
     padding: 0;
@@ -504,177 +536,162 @@
   }
 }
 
-/* ---------- contents: the lookbook's table of contents ---------- */
+/* ---------- index: the shop's typeset table of contents ---------- */
+.toc-wrap {
+  padding: var(--s-5) var(--gutter) var(--section);
+}
+
 .toc {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s-6) var(--s-3);
-  padding: var(--s-5) var(--gutter) var(--section);
 }
 
+/* Phones: number, plate, name, price and sizes stacked; desktop turns each into one typeset line. */
 .toc__link {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'num num' 'plate plate' 'name name' 'price sizes';
   gap: var(--s-2);
   font-size: var(--fs-ui);
   letter-spacing: var(--track-ui);
   text-transform: uppercase;
-}
-
-.toc__num {
-  color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
 
+.toc__num {
+  grid-area: num;
+  color: var(--ink-3);
+}
+
 .toc__plate {
+  grid-area: plate;
   display: block;
   aspect-ratio: 3 / 4;
 }
 
-.toc__plate .plate__img {
+.toc__plate .plate__img,
+.toc-preview__plate .plate__img {
   object-position: 50% 22%;
 }
 
-.toc__meta {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--s-2);
-  flex-wrap: wrap;
-  color: var(--ink-2);
-  font-variant-numeric: tabular-nums;
+.toc__name {
+  grid-area: name;
+}
+
+.toc__lead {
+  display: none;
 }
 
 .toc__sizes {
+  grid-area: sizes;
   display: flex;
   gap: 6px;
+  color: var(--ink-2);
 }
 
 .toc__sizes s {
   color: var(--ink-3);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .toc__link .plate__img {
-    transition: transform 700ms var(--ease-expo);
-  }
-  .toc__link:hover .toc__name {
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-  }
+.toc__price {
+  grid-area: price;
+  color: var(--ink-2);
+}
+
+.toc-preview {
+  display: none;
 }
 
 @media (min-width: 768px) {
   .toc {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s-7) var(--s-5);
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
+  .toc-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: var(--s-8);
+    align-items: start;
+  }
   .toc {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    display: block;
+    border-top: 1px solid var(--ink);
   }
-}
-
-/* ---------- home: sizes band ---------- */
-.sizes-band {
-  padding-block: var(--section) var(--s-7);
-  border-top: 1px solid var(--hairline);
-}
-
-.sizes-band__head {
-  display: grid;
-  gap: var(--s-3);
-}
-
-.sizes-band__row {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  margin-top: var(--s-6);
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--hairline);
-}
-
-.sizes-band__row li + li {
-  border-left: 1px solid var(--hairline);
-}
-
-.sb {
-  display: grid;
-  align-content: space-between;
-  gap: var(--s-5);
-  height: 100%;
-  min-height: clamp(150px, 28vw, 300px);
-  padding: var(--s-3) var(--s-3) var(--s-4);
-  overflow: hidden;
-  transition:
-    background-color var(--d-hover) var(--ease-color),
-    color var(--d-hover) var(--ease-color);
-}
-
-.sb__n {
-  display: block;
-  font-size: clamp(40px, 12.5vw, 184px);
-  line-height: 0.82;
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
-}
-
-.sb__meta {
-  display: grid;
-  gap: 2px;
-  font-size: var(--fs-ui);
-  letter-spacing: var(--track-ui);
-  text-transform: uppercase;
-}
-
-.sb__c {
-  color: var(--ink-2);
-  transition: color var(--d-hover) var(--ease-color);
-}
-
-.sb.is-out {
-  color: var(--ink-3);
-}
-
-.sizes-band__guide {
-  margin-top: var(--s-4);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  a.sb:hover {
+  .toc__item {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .toc__link {
+    grid-template-columns: 3ch minmax(0, max-content) minmax(24px, 1fr) auto 12ch;
+    grid-template-areas: 'num name lead sizes price';
+    align-items: baseline;
+    column-gap: var(--s-4);
+    padding: 15px 0 14px;
+  }
+  .toc__plate {
+    display: none;
+  }
+  .toc__lead {
+    display: block;
+    grid-area: lead;
+    align-self: center;
+    height: 1px;
+    background: var(--hairline);
+    transition: background-color var(--d-hover) var(--ease-color);
+  }
+  .toc__price {
+    text-align: right;
+    color: var(--ink);
+  }
+  .toc__link.is-on .toc__name,
+  .toc__link:focus-visible .toc__name {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+  }
+  .toc__link.is-on .toc__lead {
     background: var(--ink);
-    color: var(--ground);
   }
-  a.sb:hover .sb__c {
-    color: rgba(255, 255, 255, 0.7);
+  .toc__link:focus-visible {
+    outline-offset: 2px;
+  }
+  .toc-preview {
+    position: sticky;
+    top: calc(var(--header-h) + var(--lb-bar) + var(--s-5));
+    display: grid;
+    gap: var(--s-3);
+  }
+  .toc-preview__plate {
+    display: block;
+    aspect-ratio: 3 / 4;
+    max-height: calc(100svh - var(--header-h) - var(--lb-bar) - 110px);
+  }
+  .toc-preview__plate .plate__inner {
+    position: absolute;
+    inset: 0;
+  }
+  .toc-preview__name {
+    font-size: var(--fs-ui);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 }
 
-@media (min-width: 768px) {
-  .sb {
-    padding: var(--s-4) var(--s-5) var(--s-5);
-  }
-  .sb__meta {
-    display: flex;
-    justify-content: space-between;
-  }
+/* ---------- demo data note (local testing only): in the flow, never over content ---------- */
+.demo-note {
+  padding: 10px var(--gutter);
+  background: var(--ink);
+  color: var(--ground);
+  font-size: var(--fs-ui);
+  line-height: 1.5;
 }
 
-/* ---------- home: rail captions carry a price now ---------- */
-.rail__frame {
-  display: block;
-}
-
-.rail__photo {
-  display: block;
-  position: absolute;
-  inset: 0;
-}
-
-.rail__price {
-  font-size: 16px;
-}
-
-.rail__name a {
-  color: inherit;
+/* ---------- header: the open category ---------- */
+.nav__list .tlink[aria-current] {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1px;
 }

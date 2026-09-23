@@ -7,6 +7,6 @@ export const SITE = {
   address: 'Rruga Andon Zako Çajupi, pas LSI, Tiranë',
   maps: 'https://maps.google.com/?q=41.320034%2C19.812943',
   geo: { lat: 41.320034, lng: 19.812943 },
-  heroImage: '/dresses/Db-zsJ3tVU8_0.jpg',
-  ogImage: '/dresses/Db-zsJ3tVU8_0.jpg',
+  heroImage: '/brand/hero.jpg',
+  ogImage: '/brand/hero.jpg',
 } as const;

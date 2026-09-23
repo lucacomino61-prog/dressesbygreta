@@ -65,6 +65,7 @@ adminApi.get('/summary', async (c) => {
     awaitingPayment: count(o?.results, 'awaiting_payment'),
     confirmed: count(o?.results, 'confirmed'),
     soldOut: ((low?.results ?? [])[0] as { n?: number } | undefined)?.n ?? 0,
+    demo: (await getSetting(db, 'demo_data')) === '1',
   });
 });
 

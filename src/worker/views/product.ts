@@ -15,14 +15,15 @@ export function productView(lang: Lang, p: Product, index: number, total: number
         <ol class="product__photos" aria-label="${t.a11y.gallery}" data-gallery>
           ${p.photos.map(
             (ph, i) =>
-              html`<li class="product__photo">${plate(ph, {
+              html`<li class="product__photo"><button class="product__zoom" type="button" data-zoom="${i}" aria-label="${t.a11y.zoom}: ${t.a11y.photoOf(i + 1, p.photos.length)}">${plate(ph, {
                 alt: ph.alt || (i === 0 ? p.name : ''),
                 sizes: '(min-width: 1024px) 56vw, 100vw',
                 eager: i === 0,
                 target: 1600,
                 flip: i === 0 ? flipId(p) : undefined,
                 cls: 'product__plate',
-              })}</li>`,
+                tag: 'span',
+              })}</button></li>`,
           )}
         </ol>
         ${p.photos.length > 1 ? html`<p class="product__count" aria-hidden="true"><span data-gallery-i>1</span> / ${p.photos.length}</p>` : ''}
@@ -30,7 +31,6 @@ export function productView(lang: Lang, p: Product, index: number, total: number
 
       <div class="product__info">
         <div class="product__hold">
-          <p class="product__folio">${folio(index, total)}</p>
           <h1 class="product__name">${p.name}</h1>
           ${price(p, lang, 'price product__price')}
           <form class="product__form" data-add data-product="${bagData(p)}" novalidate>
@@ -47,6 +47,7 @@ export function productView(lang: Lang, p: Product, index: number, total: number
             <a class="tlink" href="${SITE.message}" target="_blank" rel="noopener">${t.product.rent}</a>
             ${p.instagramUrl ? html`<a class="tlink" href="${p.instagramUrl}" target="_blank" rel="noopener">${t.product.instagram}</a>` : ''}
           </p>
+          <p class="product__foot"><span>${folio(index, total)}</span><a class="tlink" href="${href('/dyqani', lang)}">${t.product.back}</a></p>
         </div>
       </div>
     </article>

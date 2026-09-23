@@ -36,7 +36,8 @@ publicApi.post('/orders', async (c) => {
   if (!body || (typeof body.website === 'string' && body.website.trim())) return c.json({ error: 'invalid' }, 400);
   const { input, errors } = parseOrderInput(body);
   if (!input) return c.json({ error: 'invalid', fields: errors }, 400);
-  if (!(await hit(c.env.DB, `order:${clientIp(c)}`, 10, 60 * 60))) return c.json({ error: 'too_many_orders' }, 429);
+  // Ten orders an hour from one address; the local dev build is exempt so test runs do not trip it.
+  if (!(await hit(c.env.DB, `order:${clientIp(c)}`, import.meta.env.DEV ? 1000 : 10, 60 * 60))) return c.json({ error: 'too_many_orders' }, 429);
   const res = await createOrder(c.env, input, new URL(c.req.url).origin);
   if (!res.ok) return c.json({ error: res.error, unavailable: res.unavailable ?? [] }, res.status);
   return c.json({ id: res.id, number: res.number, payUrl: res.payUrl ?? null }, 201);

@@ -59,10 +59,35 @@
   max-width: 460px;
 }
 
-.product__folio {
+/* every photograph opens whole in the viewer */
+.product__zoom {
+  display: block;
+  width: 100%;
+  cursor: zoom-in;
+}
+
+.product__zoom:focus-visible {
+  outline-offset: -3px;
+}
+
+.product__zoom .product__plate {
+  display: block;
+}
+
+.product__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--hairline);
+  padding-top: var(--s-1);
   font-size: var(--fs-ui);
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
+}
+
+.product__foot .tlink {
+  padding-right: 0;
+  color: var(--ink);
 }
 
 .product__name {
@@ -240,14 +265,7 @@
     min-height: 560px;
   }
   .product__plate .plate__img {
-    object-fit: contain;
-    object-position: 0% 50%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 0% 50%;
-  }
-  .product__plate .plate__inner {
-    background: var(--ground);
+    object-position: 50% 24%;
   }
   .product__count {
     display: none;
@@ -280,4 +298,100 @@
   .next-dress__back {
     grid-column: 4 / 10;
   }
+}
+
+/* ---------- viewer: every photograph whole, one screen each ---------- */
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--ground);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.viewer::backdrop {
+  background: var(--ground);
+}
+
+.viewer__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+
+.viewer__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* The photograph is always whole: the slide is a definite box and the image is contained in it. */
+.viewer__slide {
+  flex: 0 0 100%;
+  height: 100%;
+  margin: 0;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  padding: max(56px, env(safe-area-inset-top) + 44px) var(--gutter) 64px;
+}
+
+.viewer__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .viewer__slide {
+    padding-inline: 72px;
+  }
+}
+
+.viewer__btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: var(--ground);
+}
+
+.viewer__close {
+  top: max(var(--s-2), env(safe-area-inset-top));
+  right: var(--s-2);
+}
+
+.viewer__prev,
+.viewer__next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.viewer__prev {
+  left: var(--s-2);
+}
+
+.viewer__next {
+  right: var(--s-2);
+}
+
+.viewer__count {
+  position: absolute;
+  left: 50%;
+  bottom: max(var(--s-5), env(safe-area-inset-bottom) + 8px);
+  transform: translateX(-50%);
+  font-size: var(--fs-ui);
+  letter-spacing: var(--track-ui);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
 }

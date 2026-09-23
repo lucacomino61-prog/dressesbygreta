@@ -27,8 +27,8 @@ export function pageMotion(main: HTMLElement, opts: { arrivedByFlight: boolean }
   const nav = document.querySelector<HTMLElement>('[data-nav]');
 
   mm.add('(prefers-reduced-motion: no-preference)', () => {
-    if (kind === 'home') home(main);
-    if (kind === 'shop') shop(main, opts.arrivedByFlight);
+    if (kind === 'home') hero(main);
+    if (kind === 'home' || kind === 'shop') shop(main, opts.arrivedByFlight);
     if (kind === 'product') product(main, opts.arrivedByFlight);
     if (kind === 'confirmation') confirmation(main);
   });
@@ -49,7 +49,7 @@ export function pageMotion(main: HTMLElement, opts: { arrivedByFlight: boolean }
 }
 
 /** Prints a plate (0 to 1 on --p) once, after its photograph has decoded (never waits over 2.5 s). */
-export function printPlate(plate: HTMLElement, delay = 0, duration = 0.9): gsap.core.Tween | null {
+export function printPlate(plate: HTMLElement, delay = 0, duration = 0.9): void {
   const img = plate.querySelector<HTMLImageElement>('img');
   plate.style.setProperty('--p', '0');
   const state = { p: 0 };
@@ -61,57 +61,23 @@ export function printPlate(plate: HTMLElement, delay = 0, duration = 0.9): gsap.
     paused: true,
     onUpdate: () => plate.style.setProperty('--p', state.p.toFixed(4)),
   });
-  const ready = !img || (img.complete && img.naturalWidth > 0) ? Promise.resolve() : new Promise<void>((r) => {
-    img.addEventListener('load', () => r(), { once: true });
-    img.addEventListener('error', () => r(), { once: true });
-  });
+  const ready =
+    !img || (img.complete && img.naturalWidth > 0)
+      ? Promise.resolve()
+      : new Promise<void>((r) => {
+          img.addEventListener('load', () => r(), { once: true });
+          img.addEventListener('error', () => r(), { once: true });
+        });
   void Promise.race([ready, new Promise((r) => setTimeout(r, 2500))]).then(() => tween.play());
-  return tween;
 }
 
-function home(main: HTMLElement): void {
+function hero(main: HTMLElement): void {
   gsap.from('.hero__title', { opacity: 0, letterSpacing: '0.3em', duration: 0.9, ease: 'expo.out' });
   gsap.from('.hero__content', { opacity: 0, y: 10, duration: 0.5, ease: 'expo.out', delay: 0.3 });
-  const hero = main.querySelector<HTMLElement>('.hero__plate');
-  if (hero) printPlate(hero, 0, 1.1);
+  const plate = main.querySelector<HTMLElement>('.hero__plate');
+  if (plate) printPlate(plate, 0, 1.1);
   gsap.to('.hero__plate', { '--drift': '-6%', ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
   gsap.to('.hero__mark', { opacity: 0, yPercent: 20, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
-
-  // Featured sleeves: the browser holds each one (position: sticky); GSAP only scrubs.
-  const plates = gsap.utils.toArray<HTMLElement>('.rail__plate', main);
-  const holds = gsap.utils.toArray<HTMLElement>('.rail .hold', main);
-  plates.forEach((plate, i) => {
-    const hold = holds[i];
-    if (!hold) return;
-    const prevHold = holds[i - 1];
-    const photo = plate.querySelector<HTMLElement>('.rail__photo');
-    const arrival = prevHold
-      ? { trigger: prevHold, start: 'bottom bottom', end: 'bottom 50%', scrub: true }
-      : { trigger: hold, start: 'top bottom', end: 'bottom bottom', scrub: true };
-    if (photo) gsap.fromTo(photo, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: arrival });
-    const prev = plates[i - 1];
-    if (prev && prevHold) {
-      gsap.to(prev.querySelector('.rail__photo .plate__inner'), {
-        scale: 0.94,
-        opacity: 0.45,
-        ease: 'none',
-        scrollTrigger: { trigger: prevHold, start: 'bottom bottom', end: 'bottom top', scrub: true },
-      });
-      gsap.to(prev.querySelector('.rail__caption'), { opacity: 0, ease: 'none', scrollTrigger: { trigger: prevHold, start: 'bottom bottom', end: 'bottom 60%', scrub: true } });
-    }
-  });
-
-  // The size numerals rise out of their own baseline, once, as the band arrives.
-  const nums = gsap.utils.toArray<HTMLElement>('.sb__n', main);
-  if (nums.length) {
-    gsap.from(nums, {
-      yPercent: 100,
-      duration: 0.9,
-      ease: 'expo.out',
-      stagger: 0.06,
-      scrollTrigger: { trigger: '.sizes-band__row', start: 'top 85%', once: true },
-    });
-  }
 }
 
 function shop(main: HTMLElement, arrivedByFlight: boolean): void {
@@ -119,12 +85,27 @@ function shop(main: HTMLElement, arrivedByFlight: boolean): void {
   const list = main.querySelector<HTMLElement>('.spreads');
   if (list && spreads.length) {
     const first = spreads[0]!;
+    // The first sheet prints when it reaches the eye: at once on /dyqani, under the hero on home.
     if (!arrivedByFlight) {
       const p = first.querySelector<HTMLElement>('.spread__plate');
       const s = first.querySelector<HTMLElement>('.spread__second');
-      if (p) printPlate(p, 0.05, 1);
-      if (s) printPlate(s, 0.25, 0.9);
-      gsap.from(first.querySelector('.spread__cap'), { opacity: 0, y: 12, duration: 0.6, ease: 'expo.out', delay: 0.35 });
+      const n = first.querySelector<HTMLElement>('.spread__page-n');
+      const cap = first.querySelector<HTMLElement>('.spread__cap');
+      if (p) p.style.setProperty('--p', '0');
+      if (s) s.style.setProperty('--p', '0');
+      if (n) gsap.set(n, { yPercent: 100 });
+      if (cap) gsap.set(cap, { opacity: 0, y: 12 });
+      ScrollTrigger.create({
+        trigger: first,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          if (p) printPlate(p, 0.05, 1);
+          if (s) printPlate(s, 0.25, 0.9);
+          if (n) gsap.to(n, { yPercent: 0, duration: 1, ease: 'expo.out', delay: 0.2 });
+          if (cap) gsap.to(cap, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out', delay: 0.35 });
+        },
+      });
     }
     // Scroll positions are computed from the list (never from a stuck sheet, whose box moves).
     const geo = () => {
@@ -144,18 +125,22 @@ function shop(main: HTMLElement, arrivedByFlight: boolean): void {
         const g = geo();
         return g.top + i * g.h - g.stick;
       };
+      const at = (f: number) => () => enter() + (stuck() - enter()) * f;
       const plate = sp.querySelector<HTMLElement>('.spread__plate');
       const second = sp.querySelector<HTMLElement>('.spread__second');
+      const pageNo = sp.querySelector<HTMLElement>('.spread__page-n');
       const cap = sp.querySelector<HTMLElement>('.spread__cap');
       // The print runs ahead of the sheet's edge, so the scan line visibly leads it.
-      if (plate) gsap.fromTo(plate, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { start: enter, end: () => (enter() + stuck()) / 2, scrub: true } });
-      if (second) gsap.fromTo(second, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { start: () => enter() + (stuck() - enter()) * 0.2, end: () => enter() + (stuck() - enter()) * 0.7, scrub: true } });
-      if (cap) gsap.fromTo(cap, { opacity: 0, y: 16 }, { opacity: 1, y: 0, ease: 'none', scrollTrigger: { start: () => enter() + (stuck() - enter()) * 0.4, end: stuck, scrub: true } });
+      if (plate) gsap.fromTo(plate, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { start: enter, end: at(0.5), scrub: true } });
+      if (second) gsap.fromTo(second, { '--p': 0 }, { '--p': 1, ease: 'none', scrollTrigger: { start: at(0.2), end: at(0.7), scrub: true } });
+      if (pageNo) gsap.fromTo(pageNo, { yPercent: 100 }, { yPercent: 0, ease: 'none', scrollTrigger: { start: at(0.25), end: at(0.8), scrub: true } });
+      if (cap) gsap.fromTo(cap, { opacity: 0, y: 16 }, { opacity: 1, y: 0, ease: 'none', scrollTrigger: { start: at(0.4), end: stuck, scrub: true } });
       gsap.to(prev.querySelector('.spread__page'), { scale: 0.94, opacity: 0.45, ease: 'none', scrollTrigger: { start: enter, end: stuck, scrub: true } });
     });
   }
 
-  const tiles = gsap.utils.toArray<HTMLElement>('.toc__plate', main);
+  // Index view: phones print each plate as it arrives; desktop prints the preview once.
+  const tiles = gsap.utils.toArray<HTMLElement>('.toc__plate', main).filter((el) => el.offsetParent !== null);
   if (tiles.length) {
     gsap.set(tiles, { '--p': 0 });
     ScrollTrigger.batch(tiles, {
@@ -164,6 +149,10 @@ function shop(main: HTMLElement, arrivedByFlight: boolean): void {
       onEnter: (b) => gsap.to(b, { '--p': 1, duration: 0.6, ease: 'power3.out', stagger: 0.05, overwrite: true }),
     });
   }
+  const preview = main.querySelector<HTMLElement>('.toc-preview__plate');
+  if (preview && preview.offsetParent !== null && !arrivedByFlight) printPlate(preview, 0.1, 0.9);
+  const rows = gsap.utils.toArray<HTMLElement>('.toc__link', main).slice(0, 14);
+  if (rows.length && tiles.length === 0) gsap.from(rows, { opacity: 0, y: 8, duration: 0.5, ease: 'expo.out', stagger: 0.025 });
 }
 
 function product(main: HTMLElement, arrivedByFlight: boolean): void {
@@ -187,6 +176,26 @@ function product(main: HTMLElement, arrivedByFlight: boolean): void {
 function confirmation(main: HTMLElement): void {
   gsap.from(main.querySelector('.confirm__num'), { yPercent: 60, opacity: 0, duration: 1, ease: 'expo.out' });
   gsap.from(main.querySelectorAll('.confirm__lead > *, .confirm__grid > *'), { opacity: 0, y: 10, duration: 0.6, ease: 'expo.out', stagger: 0.06, delay: 0.25 });
+}
+
+/** Spreads that do not carry the chosen size fold away (the sheet closes upward) before the swap. */
+export function foldAway(main: HTMLElement, size: string): Promise<unknown> {
+  if (reducedMotion()) return Promise.resolve();
+  const visible = gsap.utils.toArray<HTMLElement>('.spread', main).filter((el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  });
+  const leaving = visible.filter((el) => size !== 'all' && !(el.dataset.sizes ?? '').split(' ').includes(size));
+  const staying = visible.filter((el) => !leaving.includes(el));
+  return Promise.all([
+    leaving.length
+      ? gsap.to(
+          leaving.map((el) => el.querySelector('.spread__page')),
+          { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.42, ease: 'power3.in', stagger: 0.04 },
+        )
+      : null,
+    staying.length ? gsap.to(staying.map((el) => el.querySelector('.spread__cap')), { opacity: 0.35, duration: 0.3, ease: 'power2.out' }) : null,
+  ]);
 }
 
 /**
@@ -214,7 +223,7 @@ export function takeOff(plate: HTMLElement): Flight | null {
 }
 
 export async function land(f: Flight, main: HTMLElement): Promise<boolean> {
-  const target = main.querySelector<HTMLElement>(`[data-flip-id="${CSS.escape(f.id)}"]`);
+  const target = [...main.querySelectorAll<HTMLElement>(`[data-flip-id="${CSS.escape(f.id)}"]`)].find((el) => el.getBoundingClientRect().width > 2);
   const img = target?.querySelector<HTMLImageElement>('img');
   if (!target || !img) {
     await gsap.to(f.clone, { opacity: 0, duration: 0.25, ease: 'power2.out' });
